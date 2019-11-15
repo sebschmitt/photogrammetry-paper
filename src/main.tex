@@ -1,0 +1,48 @@
+\title{Photogrammetry Paper}
+
+\date{\today}
+
+\author{Jan Maier \and Sebastian Schmitt}
+
+\maketitle
+% set the page numbering for the frontmatter to roman
+\pagenumbering{Roman}
+
+\input{src/misc/abstract} 
+
+% \addcontentsline{toc}{chapter}{\protect\numberline{}\tab}
+\tableofcontents
+
+% \newpage
+% \addcontentsline{toc}{chapter}{\protect\numberline{}Abkürzungsverzeichnis}
+\input{src/misc/abbreviations}
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\protect\numberline{}\listfigurename}
+\listoffigures
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\protect\numberline{}\listtablename} 
+\listoftables
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\protect\numberline{}\lstlistlistingname}
+\lstlistoflistings
+
+
+% mainmatter
+\newpage
+\pagenumbering{arabic}
+\input{src/misc/introduction}
+
+\input{src/theory/main.tex}
+\input{src/implementation/main.tex}
+\input{src/outlook/main.tex}
+
+\addcontentsline{toc}{chapter}{\protect\numberline{}Literatur}
+\printbibliography
+
+\input{src/misc/glossary}
