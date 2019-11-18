@@ -1,0 +1,21 @@
+language: shell 
+os: linux
+dist: bionic 
+addons:
+  apt:
+    packages:
+    - texlive-full
+    - texlive-latex-extra
+    - biber
+    - latexmk
+    - make
+script:
+- mkdir _build
+- latexmk -pdf -jobname="_build/Studienarbeit" -interaction=nonstopmode -halt-on-error ./main.tex
+deploy:
+  provider: releases
+  file: _build/Studienarbeit.pdf
+  edge: true
+  on:
+    repo: sebschmitt/photogrammetry-paper
+    tags: true
