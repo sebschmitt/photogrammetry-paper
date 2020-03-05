@@ -8,14 +8,14 @@
 % set the page numbering for the frontmatter to roman
 \pagenumbering{Roman}
 
-\input{src/misc/abstract} 
+\input{src/abstract} 
 
 % \addcontentsline{toc}{chapter}{\protect\numberline{}\tab}
 \tableofcontents
 
 % \newpage
 % \addcontentsline{toc}{chapter}{\protect\numberline{}Abkürzungsverzeichnis}
-\input{src/misc/abbreviations}
+\input{src/abbreviations}
 
 \newpage
 \phantomsection
@@ -36,13 +36,15 @@
 % mainmatter
 \newpage
 \pagenumbering{arabic}
-\input{src/misc/introduction}
+\input{src/introduction}
 
 \input{src/theory/main.tex}
+\input{src/concept/main.tex}
 \input{src/implementation/main.tex}
-\input{src/outlook/main.tex}
+\input{src/use_cases/main.tex}
+\input{src/conclusion.tex}
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}Literatur}
 \printbibliography
 
-\input{src/misc/glossary}
+\input{src/glossary}
