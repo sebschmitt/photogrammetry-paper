@@ -1,4 +1,21 @@
-% !TeX root = ../paper.tex
+% !TeX root = ../main.tex
 
 \chapter{Ziele und Anforderungen}
-Ziel der Arbeit ist es mit einfachen Mitteln 3D-Rekonstruktion von Bildern durchzuführen und die Machbarkeit davon zu bewerten.
+Ziel der Arbeit ist es mit einfachen Mitteln eine Anwendung zur 3D-Rekonstruktion von Bildern zu entwickeln und die Machbarkeit davon zu bewerten.
+Die Anwendung soll dabei aus einer Menge versetzter Bilder eines Objekts 3D Punkte des Objekts rekonstruieren und exportieren.
+Dieses Vorgehen wird als Structure from Motion\footnote{Siehe dazu \autoref{sec:sfm} \nameref{sec:sfm}} bezeichnet.
+
+Im folgenden Sind einzelne Ziele gesondert aufgeführt und erläutert.
+
+\section{Ziele}
+\begin{enumerate}
+\item \label{goal:nocost} Für die Entwicklung und Nutzung der Software sollen keine Kosten entstehen
+\item Bei der Entwicklung wird nach Möglichkeit auf offene Bibliotheken zurückgegriffen und möglichst wenig selbst implementiert
+\end{enumerate}
+
+
+\section{Anforderungen}
+\begin{enumerate}
+\item Es werden nur frei verfüg- und verwendbare Algorithmen verwendet um Ziel \autoref{goal:nocost} gerecht zu werden
+\item  Die exportierten 3D Punkte lassen sich mit Blender\footnote{https://www.blender.org/} visualisieren
+\end{enumerate}
