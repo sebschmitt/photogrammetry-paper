@@ -25,7 +25,32 @@ In dieser Arbeit werden Techniken der digitalen Photogrammetrie verwendet mit de
 \subsection{Structure from Motion}\label{sec:sfm}
 Unter Structure from Motion, kurz SfM, 
 zitat opencv dokument zu SfM
+
 \subsection{Projektionsmatrix}
+
+\subsection{Fundamental Matrix}
+Die Fundamental Matrix ist eine algebraische Darstellung der epipolaren Geometrie zwischen zwei Sichten.
+Ziel dieser Geometrie ist die Suche von korrespondierenden Punkten in zwei Sichten.
+
+Man nehme an, dass der Raumpunkt $X$, seine die Bildpunkte $x$ und $x'$, und die Kamerazentren $C$ und $C'$ in einer Ebene, genannt $\pi$, liegen.
+Man erkennt, dass die Linien der Reprojektionen von $x$ und $x'$ in $X$ schneiden und ebenfalls in der Ebene liegen.
+Mit dieser Eigenschaft kann man die Suche von Korespodenzen vereinfachen.
+Nimmt man an, dass man nur den Bildpunkt $x$ kennt, dann kann man mit Hilfe der Ebene $\pi$ die Position von $x'$ einschränken.
+Denn $x'$ muss sich auf der Schnittline der eben beschriebenen Ebene und der Bildebene der zweiten Sicht befinden. 
+Diese Schnittline wird \emph{epipolare Linie} genannt.
+Die Punkte $e$ und $e'$ sind die Schnittpunkte des Vectors CC' und werden Epi pole genannt. 
+
+% S.240 / 241 multiple view geometry
+Die Fundamental Matrix wird in XXX definiert als die $3\cross 3$ Matrix definiert, die für alle korrespondierenden Punkte $x \doublearrow x'$ 
+\[ x'^TFx=0\] 
+erfüllen.
+% TODO: bedeutung Zitieren
+Geometrisch betrachtet ist die Fundamental Matrix eine Abbildung der zweidimenionalen projektiven Ebene des ersten Bilds .....
+
+
+
+
+
 \subsection{Camera-Instrincs}
 \subsection{Fundamental Matrix}
 \subsection{Essential Matrix}
