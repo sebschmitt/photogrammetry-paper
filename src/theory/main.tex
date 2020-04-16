@@ -29,23 +29,32 @@ zitat opencv dokument zu SfM
 \subsection{Projektionsmatrix}
 
 \subsection{Fundamental Matrix}
-Die Fundamental Matrix ist eine algebraische Darstellung der epipolaren Geometrie zwischen zwei Sichten.
+Die Fundamental Matrix ist eine algebraische Darstellung der Epipolargeometrie zwischen zwei Sichten.
 Ziel dieser Geometrie ist die Suche von korrespondierenden Punkten in zwei Sichten.
 
-Man nehme an, dass der Raumpunkt $X$, seine die Bildpunkte $x$ und $x'$, und die Kamerazentren $C$ und $C'$ in einer Ebene, genannt $\pi$, liegen.
-Man erkennt, dass die Linien der Reprojektionen von $x$ und $x'$ in $X$ schneiden und ebenfalls in der Ebene liegen.
-Mit dieser Eigenschaft kann man die Suche von Korespodenzen vereinfachen.
+Man nehme an, dass der Raumpunkt $X$, die Bildpunkte $x$ und $x'$, und die Kamerazentren $C$ und $C'$ in einer Ebene, genannt $\pi$, liegen (siehe Abb.~\ref{fig:theory-fundamental-matrix}).
+Man erkennt, dass sich die Linien von den Kamerazentren durch $x$ bzw. $x'$ in $X$ schneiden und ebenfalls in der Ebene liegen.
+Mit dieser Eigenschaft kann man die Suche von korrespondierenden Bildpunkten vereinfachen.
 Nimmt man an, dass man nur den Bildpunkt $x$ kennt, dann kann man mit Hilfe der Ebene $\pi$ die Position von $x'$ einschränken.
-Denn $x'$ muss sich auf der Schnittline der eben beschriebenen Ebene und der Bildebene der zweiten Sicht befinden. 
-Diese Schnittline wird \emph{epipolare Linie} genannt.
-Die Punkte $e$ und $e'$ sind die Schnittpunkte des Vectors CC' und werden Epi pole genannt. 
+Denn $x'$ muss sich auf der Schnittlinie der eben beschriebenen Ebene und der Bildebene der zweiten Sicht befinden. 
+Diese Schnittlinie wird \emph{Epipolarlinie} genannt.
+Die Punkte $e$ und $e'$ sind die Schnittpunkte des Vektors $\overline{CC'}$ mit den Bildebenen und werden Epipole genannt.
+Die Ebene $\pi$ wird zusätzlich Epipolarebene genannt.
+~\cite[Kapitel 9,1]{hartley_2000}
 
 % S.240 / 241 multiple view geometry
-Die Fundamental Matrix wird in XXX definiert als die $3\cross 3$ Matrix definiert, die für alle korrespondierenden Punkte $x \doublearrow x'$ 
+Die Fundamental Matrix wird in~\cite[Kapitel 9.2]{hartley_2000} definiert als die $3\times 3$ Matrix, die für alle korrespondierenden Punkte $x \leftrightarrow x'$ 
 \[ x'^TFx=0\] 
 erfüllen.
-% TODO: bedeutung Zitieren
-Geometrisch betrachtet ist die Fundamental Matrix eine Abbildung der zweidimenionalen projektiven Ebene des ersten Bilds .....
+Geometrisch betrachtet ist die F eine Abbildung der Punkte in einem Bild auf ihre Epipolarlinien im zweiten Bild.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics{src/img/hartley_2000_fundamental_matrix.jpg}
+    \caption{Veranschaulichung der Epipolargeometrie~\cite[Fig. 9.1]{hartley_2000}}
+    \label{fig:theory-fundamental-matrix}
+\end{figure}
+
 
 
 
