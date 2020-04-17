@@ -37,7 +37,7 @@ Der Schnittpunkt $p$ der Bildebene und der Z-Achse wird als Hauptpunkt (engl. pr
 Der Hauptpunkt definiert innerhalb der Bildebene den Ursprung eines zweidimensionalen Koordinatensystems.
 Häufig ist es aber der Fall, dass der Hauptpunkt und der Ursprung voneinander abweichen.
 Daher wird der Ursprung auch mit den Koordinaten $(p_x, p_y)^T$ angegeben.
-Die Abbildung eines Punkts im Raum auf die Bildebene in homogenen Koordinaten wie folgt durch eine Matrixmultiplikation ausgedrückt werden:
+Mit diesen Informationen kann nach~\cite[Gleichung 6.2]{hartley_2003} die Abbildung eines Punkts im Raum auf die Bildebene in homogenen Koordinaten durch eine Matrixmultiplikation ausgedrückt werden:
 \begin{equation}
 \label{eqn:theory-projection}
 \begin{pmatrix}
@@ -58,8 +58,8 @@ Die Abbildung eines Punkts im Raum auf die Bildebene in homogenen Koordinaten wi
 \end{pmatrix}
 \end{equation}
 Diese Gleichung lässt sich mit der Notation $X$ für einen homogenen 4-Vektor, $x$ für einen homogenen 3 Vektor als $x = PX$ schreiben.
-Dabei ist $P$ die homogene $3\times 4$ \emph{Kamera-Projektionsmatrix}.
-Mit der Definition der \emph{Kameramatrix} K
+Dabei ist $P$ die homogene $3\times 4$ \emph{Kamera-Projektionsmatrix} (auch \emph{Kamermatrix} oder \emph{Projektionsmatrix} genannt).
+Mit der Definition der \emph{Kamera-Kalibrierungsmatrix} (auch \emph{Kalibrierungsmatrix}) K
 \[
     K=
     \begin{bmatrix}
@@ -68,20 +68,20 @@ Mit der Definition der \emph{Kameramatrix} K
       &   & 1   & 0
     \end{bmatrix}
 \]
-kann die~\ref{eqn:theory-projection} auch zu $x=K[I | 0] X$ vereinfacht werden~\cite[6.1]{hartley_2000}. 
+kann die~\ref{eqn:theory-projection} auch zu $x=K[I | 0] X$ vereinfacht werden~\cite[vgl. Gleichung 6.5]{hartley_2003}. 
 
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{src/img/hartley_2003_lochkamera.jpg}
-    \caption{Darstellung des Lochkamera-Modells~\cite[Fig. 6.1]{hartley_2000}}
+    \caption{Darstellung des Lochkamera-Modells~\cite[Fig. 6.1]{hartley_2003}}
     \label{fig:theory-pinhole-camera}
 \end{figure}
 
 
 Für gewöhnlich werden Punkte in einem Raum in einem anderem Koordinatensystem ausgedrückt.
 Die Beziehung zwischen beiden Koordinatensystemen wird durch die $3\times 3$ Rotationsmatrix $R$ und dem Translationsvektor $t$ beschrieben. 
-Die Kamera-Projektionsmatrix kann somit auch als $P=K[R|t]$ geschrieben werden.
+Die Kamera-Projektionsmatrix kann somit auch als $P=K[R|t]$ geschrieben werden~\cite[Kapitel 6.1,S. 156, Gleichung 6.7]{hartley_2003}.
 
 
 \subsection{Fundamental Matrix}
@@ -96,21 +96,39 @@ Denn $x'$ muss sich auf der Schnittlinie der eben beschriebenen Ebene und der Bi
 Diese Schnittlinie wird \emph{Epipolarlinie} genannt.
 Die Punkte $e$ und $e'$ sind die Schnittpunkte des Vektors $\overline{CC'}$ mit den Bildebenen und werden Epipole genannt.
 Die Ebene $\pi$ wird zusätzlich Epipolarebene genannt.
-~\cite[Kapitel 9,1]{hartley_2000}
+~\cite[Kapitel 9,1]{hartley_2003}
 
 % S.240 / 241 multiple view geometry
-Die Fundamental Matrix wird in~\cite[Kapitel 9.2]{hartley_2000} definiert als die $3\times 3$ Matrix, die für alle korrespondierenden Punkte $x \leftrightarrow x'$ 
+Die Fundamental Matrix wird in~\cite[Kapitel 9.2]{hartley_2003} definiert als die $3\times 3$ Matrix, die für alle korrespondierenden Punkte $x \leftrightarrow x'$ 
 \[ x'^TFx=0\] 
 erfüllen.
 Geometrisch betrachtet ist die F eine Abbildung der Punkte in einem Bild auf ihre Epipolarlinien im zweiten Bild.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\textwidth]{src/img/hartley_2000_fundamental_matrix.jpg}
-    \caption{Veranschaulichung der Epipolargeometrie~\cite[Fig. 9.1]{hartley_2000}}
+    \includegraphics[width=\textwidth]{src/img/hartley_2003_fundamental_matrix.jpg}
+    \caption{Veranschaulichung der Epipolargeometrie~\cite[Fig. 9.1]{hartley_2003}}
     \label{fig:theory-fundamental-matrix}
 \end{figure}
 
-\subsection{Essential Matrix}
+\subsection{Essentielle Matrix}
+Die essentielle Matrix ist eine Spezialisierung der Fundamentalmatrix mit normalisierten Bildkoordinaten.
+Sie wird durch die Gleichung $\hat{x}'E\hat{x}$ definiert, wobei $\hat{x}$ ein Punkt in normalisierten Bildkoordinaten darstellt.
+Mit Hilfe der Kalibrierungsmatrizen $K$ und $K'$ von zwei Bildern, kann die Beziehung $E=K'^TFK$ zur Fundamentalmatrix hergeleitet werden~\cite[Kaptiel 9.6]{hartley_2003}.
+
+Es ist möglich durch eine Singulärwertzerlegung der essentiellen Matrix die Kameramatrix zu bestimmen.
+Dabei wird für die erste Kameramatrix $P=[I|0]$ angenommen. 
+Für die zweite Kameramatrix gibt es vier Möglichkeiten, die sich aus den zwei möglichen Rotationsmatrizen $R$ und den zwei möglichen Vorzeichen für den Translationsvektor $t$ ergeben.
+Geometrisch betrachtet kann jedoch nur einer der Kombinationen stimmen.
+Wie in Abb.~\ref{fig:theory-essential-matrix-geometry} zusehen ist, gibt es nur einen Fall, bei dem ein Punkt im Raum vor beiden Bildebenen liegt.
+Mit dieser Überprüfung kann die zweite Kameramatrix $P'=[R|t]$ bestimmt werden.
+Hier muss beachtet werden, dass $t$ ein Einheitsvektor ist nur maßstabsgetreu ist.
+
+
+\begin{figure}[h!]
+    \includegraphics[width=\textwidth]{src/img/hartley_2003_e_geometry.jpg}
+    \caption{Die geometrische Darstellung der vier möglichen Lösungen für $E$. Nur in (a) liegt der markierte Punkt vor beiden Kameraebenen.~\cite[Fig. 9.12]{hartley_2003}}
+    \label{fig:theory-essential-matrix-geometry}
+\end{figure}
 
 \section{Wie funktioniert Photogrammetry?}
