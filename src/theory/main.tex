@@ -26,7 +26,63 @@ In dieser Arbeit werden Techniken der digitalen Photogrammetrie verwendet mit de
 Unter Structure from Motion, kurz SfM, 
 zitat opencv dokument zu SfM
 
-\subsection{Projektionsmatrix}
+\subsection{Lochkamera-Modell}
+Das Lochkamera-Modell ist das einfachste Kameramodell und wird im Folgenden dazu verwendet relevante Begriffe und die Geometrie zu erklären.
+Bei diesem Modell wir die zentrale Projektion von Punkten im Raum auf eine Ebene betrachtet.
+Das Zentrum der Projektion definiert den Ursprungs eines euklidischen Koordinatensystems.
+Der Ursprung wird auch \emph{Kamerazentrum} genannt und als Punkt $C$ referenziert.
+Die Bildebene liegt parallel zu der XY-Ebene auf der Z-Achse.
+Der Abstand zum Ursprung wird durch die Brennweite $f$ der Kamera definiert.
+Der Schnittpunkt $p$ der Bildebene und der Z-Achse wird als Hauptpunkt (engl. principal point) bezeichnet.
+Der Hauptpunkt definiert innerhalb der Bildebene den Ursprung eines zweidimensionalen Koordinatensystems.
+Häufig ist es aber der Fall, dass der Hauptpunkt und der Ursprung voneinander abweichen.
+Daher wird der Ursprung auch mit den Koordinaten $(p_x, p_y)^T$ angegeben.
+Die Abbildung eines Punkts im Raum auf die Bildebene in homogenen Koordinaten wie folgt durch eine Matrixmultiplikation ausgedrückt werden:
+\begin{equation}
+\label{eqn:theory-projection}
+\begin{pmatrix}
+    X \\ Y \\ Z \\ 1
+\end{pmatrix}
+\mapsto
+\begin{pmatrix}
+    fX+Zp_x \\ fY+Zp_y \\ Z
+\end{pmatrix}
+=
+\begin{bmatrix}
+    f &   & p_x & 0 \\
+      & f & p_y & 0 \\
+      &   & 1   & 0
+\end{bmatrix}
+\begin{pmatrix}
+    X \\ Y \\ Z \\ 1
+\end{pmatrix}
+\end{equation}
+Diese Gleichung lässt sich mit der Notation $X$ für einen homogenen 4-Vektor, $x$ für einen homogenen 3 Vektor als $x = PX$ schreiben.
+Dabei ist $P$ die homogene $3\times 4$ \emph{Kamera-Projektionsmatrix}.
+Mit der Definition der \emph{Kameramatrix} K
+\[
+    K=
+    \begin{bmatrix}
+    f &   & p_x & 0 \\
+      & f & p_y & 0 \\
+      &   & 1   & 0
+    \end{bmatrix}
+\]
+kann die~\ref{eqn:theory-projection} auch zu $x=K[I | 0] X$ vereinfacht werden~\cite[6.1]{hartley_2000}. 
+
+
+\begin{figure}
+    \centering
+    \includegraphics{src/img/hartley_2003_lochkamera.jpg}
+    \caption{Darstellung des Lochkamera-Modells~\cite[Fig. 6.1]{hartley_2000}}
+    \label{fig:theory-pinhole-camera}
+\end{figure}
+
+
+Für gewöhnlich werden Punkte in einem Raum in einem anderem Koordinatensystem ausgedrückt.
+Die Beziehung zwischen beiden Koordinatensystemen wird durch die $3\times 3$ Rotationsmatrix $R$ und dem Translationsvektor $t$ beschrieben. 
+Die Kamera-Projektionsmatrix kann somit auch als $P=K[R|t]$ geschrieben werden.
+
 
 \subsection{Fundamental Matrix}
 Die Fundamental Matrix ist eine algebraische Darstellung der Epipolargeometrie zwischen zwei Sichten.
