@@ -9,7 +9,7 @@ Je nach Art der Weiterverarbeitung sowie Aufnahme der Bilder wird der Begriff de
 Bei Weiterverarbeitung von photochemischen Bildern mittels optisch-mechanischer Geräte spricht man von \textbf{analoger Photogrammetrie}.
 Bei Weiterverarbeitung von photochemischen Bildern mittels Computer spricht man von \textbf{analytischer Photogrammetrie}.
 Bei Weiterverarbeitung von photoelektrischen Bildern mittels Computer, ein voll digitaler Prozess, spricht man von \textbf{digitaler Photogrammetrie}.
-Die Ergebnisse einer Auswertung mittels Photogrammetrie können sein: \cite{kraus_2004}
+Die Ergebnisse einer Auswertung mittels Photogrammetrie können sein: \cite[Kapitel 1.1]{kraus_2004}
 \begin{itemize}
 \item \textbf{Maßzahlen}, Koordinaten einzelner Objektpunkte in einem dreidimensionalen Koordinatensystem
 \item \textbf{Zeichnungen}, Karten und Pläne im Grundriss mit Höhenlinien
@@ -18,13 +18,36 @@ Die Ergebnisse einer Auswertung mittels Photogrammetrie können sein: \cite{krau
 \end{itemize}
 
 In dieser Arbeit werden Techniken der digitalen Photogrammetrie verwendet mit dem Ziel Maßzahlen als Ergebnis zu erhalten.
- 
-
 
 \section{Definitionen \& Begriffe}
+
 \subsection{Structure from Motion}\label{sec:sfm}
-Unter Structure from Motion, kurz SfM, 
-zitat opencv dokument zu SfM
+Unter Structure from Motion, kurz SfM, versteht man eine Methode zur Rekonstruktion von 3D Punkte.
+Im Gegensatz zur normalen Photogrammetrie, bei der zuvor bekannte 3D Punkte benötigt werden, wird bei SfM die Geometrie der Szene, Kamerapositionen und Orientierung automatisch berechnet.
+Wie in \autoref{fig:theory-sfm-images} zu sehen arbeitet man bei SfM nicht wie bei der normalen Photogrammetrie mit einem Stereo-Bildpaar sondern mit einer Menge leicht verschobener, sich überlappender Bilder.
+Dieses Vorgehen bietet sich also vor allem für Mengen von Bildern an, welche sich zu einem hohen Grad überlappen aber gleichzeitig eine dreidimensionale Struktur vollständig zeigen.
+~\cite[Kapitel 1.2]{westoby_2012}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{src/img/westoby_2012_fig1_sfm_images.jpg}
+    \caption{Für Structure from Motion werden statt einem Stereo-Paar mehrere, sich überlappende Bilder benötigt~\cite[Fig. 1]{westoby_2012}}
+    \label{fig:theory-sfm-images}
+\end{figure}
+
+Dieses Vorgehen macht sich die Parallaxe zu nutze.~\cite[stockmann_2001]
+Mit Parallaxe bezeichnet man die scheinbare Änderung der Position eines Objektes, wenn der Beobachter seine eigene Position ändert
+Definiert ist diese als der Winkel zwischen zwei Graden, welche von verschiedenen Standorten auf denselben Punkt (ein Objekt) gerichtet sind (Siehe dazu \autoref{fig:theory-sfm-parallax}) \cite{stockmann_2001}.
+\footnote{Als anschauliches Beispiel kann man bei ausgestrecktem Arm einen Daumen heben und diesen abwechselnd mit dem linken und dem rechten Auge betrachten.}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{src/img/500px-Parallax_Example_de.svg.jpg}
+    \caption{Beispiel einer Parallaxe~\cite{wiki:parallax_example_de}}
+    \label{fig:theory-sfm-parallax}
+\end{figure}
+
+Um die Kameraposition sowie die Geometrie der Szene simultan zu rekonstruieren werden automatisch Feature in den Bildern identifiziert. Diese Feature werden dann über mehrere Bilder verfolgt was eine erste Annahme zu den Kamerapositionen sowie den Objektkoordinaten erlaubt welche iterativ mit nicht-linearer least-squares minimisation verfeinert werden können. ~\cite[Kapitel 1.3]{westoby_2012}
 
 \subsection{Lochkamera-Modell}
 Das Lochkamera-Modell ist das einfachste Kameramodell und wird im Folgenden dazu verwendet relevante Begriffe und die Geometrie zu erklären.
