@@ -29,7 +29,16 @@ Anschließend werden Paare aus benachbarten Bildern gebildet, in denen nach übe
 Somit ist es Aufgabe des Nutzer, die Bilder so zu sortieren, so dass es möglichst wenig Bewegung zwischen aufeinanderfolgenden Bildern gibt und mehr Übereinstimmungen gefunden werden können.
 Die korrespondierenden Bildpunkte, welche sich aus den Keypoints ergeben, werden im nächsten Prozess zum Rekonstruieren der Bilder genutzt.  
 
+Im dritten Prozess \emph{Rekonstruktion} wird die Geometrie der Szenen der Bildpaaren ermittelt und Raumpunkte durch die korrespondierende Bildpunkte bestimmt.
+Dabei werden die Positionen der Kameras der vorherigen Bildpaare beachtet, damit die Weltpunkte eines Bildpaares im selben Koordinatensystem ausgedrückt werden.
+Des Weiteren wird mit Hilfe der bereits bestimmten Weltpunkten die Skalierung einer Szene bestimmt.
+Dadurch passen die Weltpunkte der einzelnen Szenen später beim Zusammenführen besser zusammen.
+Die Schritte, die bei der Rekonstruktion durchgeführt werden, und ihre Mathematik werden in XXX erklärt.
 
+Der vierte und letzte Prozess der Pipeline \emph{Export} sammelt die rekonstruierten Weltpunkte und bestimmt ihre Farben aus den Bildern.
+Die Punkte und ihre Farbinformationen werden anschließend in einem einfachen Format als Datei gespeichert.
+Diese Datei kann dann mit Programmen wie Blender oder Meshlab geladen, betrachtet und editiert werden.
+Dieser Prozess und das Dateiformat werden in XXX beschrieben.
 
 
 \begin{figure}
