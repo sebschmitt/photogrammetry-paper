@@ -15,18 +15,19 @@ Des Weiteren wird bei der Kalibrierung auch die Verzerrungskoeffizienten der Lin
 Damit kann die Verzerrung in den Bildern reduziert werden, was zu genaueren Ergebnissen beim Rekonstruieren führt.% TODO: muss belegt werden. gff im Kapitel Kalibrierung beschreiben 
 Die Kalibrierung wird mit Hilfe eines Schachbrettmusters durchgeführt, weil *Insert befriedigende Begründug*.
 Dementsprechend müssen zusätzliche Bilder für die Kalibrierung vom Nutzer bereitgestellt werden.
+Der Nutzer muss dabei nur einen Ordnerpfad angeben, in dem sich die Bilder für die Kalibrierung befinden.
 Das Kalibrieren der Kamera kann sehr zeitaufwendig sein.
 Daher wird die Möglichkeit bereitgestellt, die Kameraparameter in einer Datei zu exportieren.
 Diese Datei kann dann geladen werden, so dass eine weitere Kalibrierung mit dem Schachbrettmuster nicht mehr nötig ist. 
 Es wird jedoch keine weiteren Features für die Verwaltung der Kalibrierungen angeboten.
 Der Nutzer ist also selbst dafür verantwortlich zu wissen, welche Datei zu welcher Kamera gehört und welche Kalibrierungsdatei für die Pipeline benötigt wird. 
 
-Der zweite Prozess umfasst das Feature Matching, welches benötigt wird, um korrespondierende Punkte in verschiedenen Bildern zu finden, die somit rekonstruiert werden können.
-Wie in XXX beschrieben, wird hier in jedem Bild nach Keypoints gesucht und beschrieben.
-
-
-
-
+Der zweite Prozess umfasst das Feature Matching, welches benötigt wird, um korrespondierende Punkte in verschiedenen Bildern von einem Objekt zu finden.
+Diese Bilder werden wie bei der Kalibrierung vom Nutzer bereitstellt, in dem ein Ordnerpfad angeben wird, der alle Bilder enthält. 
+Die Bilder werden in alphabetischer Reihenfolge geladen und nach Keypoints und ihren Deskriptoren durchsucht.
+Anschließend werden Paare aus benachbarten Bildern gebildet, in denen nach übereinstimmenden Keypoints gesucht werden.
+Somit ist es Aufgabe des Nutzer, die Bilder so zu sortieren, so dass es möglichst wenig Bewegung zwischen aufeinanderfolgenden Bildern gibt und mehr Übereinstimmungen gefunden werden können.
+Die korrespondierenden Bildpunkte, welche sich aus den Keypoints ergeben, werden im nächsten Prozess zum Rekonstruieren der Bilder genutzt.  
 
 
 
