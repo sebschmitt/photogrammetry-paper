@@ -35,9 +35,9 @@ zitat opencv dokument zu SfM
 \section{Wie funktioniert Photogrammetry?}
 
 \section{Kamerakalibrierung}
-Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parameter der Kameramatrix und dem Verzerrungsvektor. 
+Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parameter der Kameramatrix und dem Verzerrungsparameter. 
 Die Kameramatrix wird in XXX erklärt.
-Der Verzerrungsvektor wird genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
+Der Verzerrungsparameter werden genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
 Hierbei wird zwischen zwei Arten der Verzerrung unterschieden: radiale und tangentiale Verzerrung.
 Radiale Verzerrung entsteht durch die runde Form der Linse, wodurch die Pixel am Bildrand verzerrt werden.
 Diese Verzerrung kann bei manchen Linsen zunehmen, je weiter ein Strahl entfernt vom Zentrum auf die Linse trifft. 
@@ -52,5 +52,26 @@ Dabei gilt:
 \[y_\text{corrected} = y + (p_1(r^2 + 2y^2) + 2p_xy)\]
 \cite{kaehler_2016}
 
+Eine Kamera kann mit verschieden Methoden kalibriert werden.
+Häufig werden bei den Methoden Referenzraster eingesetzt, wie z.B.\ ein Schachbrettmuster.
+Das Referenzraster kann hierbei 2D oder auch 3D sein wie in den \cref{fig:2d_grid,fig:3d_grid} zu sehen ist.
+Eine weitere Methode ist die Auto-Kalibrierung, bei der kein Kalibrierungsobjekt genutzt wird.
+Dabei werden die Kameraeigenschaften aus unkalibrierten Bildern gewonnen, in dem Restriktionen auf die Kameraparameter oder auf die abgebildete Szene gelegt werden.
+Die Auto-Kalibrierung wird häufig bei der 3D Modellierung eingesetzt~\cite{remondino_2005}.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{src/img/mendonca_2013_2d_grid.jpg}
+    \caption{2D Referenzraster mit Schachbrettmuster für die Kamerakalibrierung (aus~\cite[Fig. 2]{mendonca_2013})}
+    \label{fig:2d_grid}
+\end{figure}
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{src/img/mendonca_2013_3d_grid.jpg}
+    \caption{3D Referenzraster mit Schachbrettmuster für die Kamerakalibrierung (aus~\cite[Fig. 4]{mendonca_2013})}
+    \label{fig:3d_grid}
+\end{figure}
 
