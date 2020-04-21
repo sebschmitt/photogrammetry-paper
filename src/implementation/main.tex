@@ -40,7 +40,7 @@ OpenCV wurde mit folgenden Optionen kompiliert:
 \end{itemize}
 Auch wenn es Anforderung ist nur freie Bibliotheken zu verwenden, ist der Flag OPENCV\_ENABLE\_NON\_FREE notwendig.
 Der in dieser Arbeit verwendete Algorithmus Scale-Invariant Feature Transform (SIFT) war bis 06. März 2020 von der University of British Columbia patentiert\footnote{siehe dazu https://patents.google.com/patent/US6711293} und ist daher in der verwendeten OpenCV Version nur mit OPENCV\_ENABLE\_NON\_FREE nutzbar.
-SIFT ist teil des Modules Features2D extra (xfeatures2d) welches Teil von OpenCV Contrib ist und sowohl experimentelle als auch nicht freie Algorithmen beinhaltet.
+SIFT ist Teil des Moduls Features2D extra (xfeatures2d) welches Teil von OpenCV Contrib ist und sowohl experimentelle als auch nicht freie Algorithmen beinhaltet.
 
 Um die Applikation auch nutzen zu können ohne vorab OpenCV zu installieren oder zu kompilieren wurde CMake angewiesen, OpenCV statisch zu linken (siehe \autoref{lst:cmake_opencv_static}, Zeilen 1-4).
 Zusätzlich kopiert CMake alle gelinkten Bibliotheken, auch wenn diesen nicht referenziert werden, in den Ausgabeordner, damit diese nicht von Hand kopiert werden müssen (\autoref{lst:cmake_opencv_static}, Zeilen 6-8).
