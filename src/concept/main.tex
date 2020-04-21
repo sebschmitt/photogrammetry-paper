@@ -4,16 +4,17 @@
 In diesem Abschnitt wird kurz unser Konzept für die Umsetzung von Sfm erläutert. 
 Insbesondere wird dabei erläutert, was in den einzelnen Schritten durchgeführt wird, und warum diese Schritte notwendig sind.
 Details zur Implementierung werden in Kapitel~\ref{sec:implementation} beschrieben.
-
 Das Konzept ist eine Kommandozeilen-Applikation, welche eine Pipeline mit Prozessen zur Rekonstruktion von Bildpunkten bereitstellt.
 Die Pipeline ist in Abb.~\ref{fig:concept-pipeline} dargestellt.
 Parameter, die für die einzelnen Prozesse benötigt werden, werden als Kommandozeilen-Argumente übergeben.
+
 Der erste Prozess \emph{Kalibrierung} bestimmt die Parameter der Kamera, mit der die Bilder zur Rekonstruktion aufgenommen wurden.
 Dieser Schritt ist nötig, da bei der Rekonstruktion die Kalibrierungsmatrix K benötigt wird.
 Diese Matrix enthält Informationen über die Brennweite der Kamera und der Position des Hauptpunkts im Bild.
-Des Weiteren wird bei der Kalibrierung auch die Verzerrungskoeffizienten der Linse der Kamera bestimmt. %TODO Koeffizienten in Kalibrierungskapitel erläutern
+Des Weiteren wird bei der Kalibrierung auch die Verzerrungsparameter der Kameralinse bestimmt.
 Damit kann die Verzerrung in den Bildern reduziert werden, was zu genaueren Ergebnissen beim Rekonstruieren führt.% TODO: muss belegt werden. gff im Kapitel Kalibrierung beschreiben 
-Die Kalibrierung wird mit Hilfe eines Schachbrettmusters durchgeführt, weil *Insert befriedigende Begründug*.
+Die Kalibrierung wird mit Hilfe eines Kalibrierungsobjekts durchgeführt.
+Es wurde sich bewusst gegen die Auto-Kalibrierung entschieden, da dies nicht immer möglich ist~\cite{remondino_2005}.
 Dementsprechend müssen zusätzliche Bilder für die Kalibrierung vom Nutzer bereitgestellt werden.
 Der Nutzer muss dabei nur einen Ordnerpfad angeben, in dem sich die Bilder für die Kalibrierung befinden.
 Das Kalibrieren der Kamera kann sehr zeitaufwendig sein.
