@@ -33,3 +33,24 @@ zitat opencv dokument zu SfM
 \subsection{Epipolar Geometry}
 
 \section{Wie funktioniert Photogrammetry?}
+
+\section{Kamerakalibrierung}
+Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parameter der Kameramatrix und dem Verzerrungsvektor. 
+Die Kameramatrix wird in XXX erklärt.
+Der Verzerrungsvektor wird genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
+Hierbei wird zwischen zwei Arten der Verzerrung unterschieden: radiale und tangentiale Verzerrung.
+Radiale Verzerrung entsteht durch die runde Form der Linse, wodurch die Pixel am Bildrand verzerrt werden.
+Diese Verzerrung kann bei manchen Linsen zunehmen, je weiter ein Strahl entfernt vom Zentrum auf die Linse trifft. 
+Diese Art der Verzerrung kann mathematisch als Taylorreihe um $r = 0$ und dem Termen $k_1, k_2$ und $k_3$ beschrieben werden.
+Ein Punkt $(x, y)$ kann somit als $(x_{\text{corrected}},y_{\text{corrected}})$ ohne Verzerrung ausgedrückt werden, wobei gilt:
+\[x_\text{corrected} = x \cdot (1 + k_1r^2 + k_2r^4 + k_3r^6)\]
+\[y_\text{corrected} = x \cdot (1 + k_1r^2 + k_2r^4 + k_3r^6)\]
+Tangentiale Verzerrung entsteht durch Herstellungsfehler, wodurch die Linse nicht genau parallel zur Abbildungsebene liegt.  
+Sie wird durch die Parameter $p_1$ und $p_2$ beschrieben, wodurch ein Punkt $(x,y)$ durch $(x_{\text{corrected}},y_{\text{corrected}})$ ohne Verzerrung dargestellt wird. 
+Dabei gilt:
+\[x_\text{corrected} = x + (2p_1xy + p_2(r^2 + 2x^2))\]
+\[y_\text{corrected} = y + (p_1(r^2 + 2y^2) + 2p_xy)\]
+\cite{kaehler_2016}
+
+
+
