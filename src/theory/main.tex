@@ -26,7 +26,7 @@ In dieser Arbeit werden Techniken der digitalen Photogrammetrie verwendet mit de
 Unter Structure from Motion, kurz SfM, 
 zitat opencv dokument zu SfM
 
-\subsection{Lochkamera-Modell}
+\subsection{Lochkamera-Modell}\label{sec:pinhole-camera-model}
 Das Lochkamera-Modell ist das einfachste Kameramodell und wird im Folgenden dazu verwendet relevante Begriffe und die Geometrie zu erklären.
 Bei diesem Modell wir die zentrale Projektion von Punkten im Raum auf eine Ebene betrachtet.
 Das Zentrum der Projektion definiert den Ursprungs eines euklidischen Koordinatensystems.
@@ -113,7 +113,7 @@ Geometrisch betrachtet ist die Matrix F eine Abbildung der Punkte in einem Bild 
 \subsection{Essentielle Matrix}
 Die essentielle Matrix ist eine Spezialisierung der Fundamentalmatrix mit normalisierten Bildkoordinaten.
 Sie wird durch die Gleichung $\hat{x}'E\hat{x}$ definiert, wobei $\hat{x}$ ein Punkt in normalisierten Bildkoordinaten darstellt.
-Mit Hilfe der Kalibrierungsmatrizen $K$ und $K'$ von zwei Bildern, kann die Beziehung $E=K'^TFK$ zur Fundamentalmatrix hergeleitet werden~\cite[Kaptiel 9.6]{hartley_2003}.
+Mit Hilfe der Kalibrierungsmatrizen $K$ und $K'$ von zwei Bildern, kann die Beziehung $E=K'^TFK$ zur Fundamentalmatrix hergeleitet werden~\cite[Kapitel 9.6]{hartley_2003}.
 
 Es ist möglich durch eine Singulärwertzerlegung der essentiellen Matrix die Kameramatrix zu bestimmen.
 Dabei wird für die erste Kameramatrix $P=[I|0]$ angenommen. 
@@ -121,7 +121,7 @@ Für die zweite Kameramatrix gibt es vier Möglichkeiten, die sich aus den zwei 
 Geometrisch betrachtet kann jedoch nur einer der Kombinationen stimmen.
 Wie in Abb.~\ref{fig:theory-essential-matrix-geometry} zusehen ist, gibt es nur einen Fall, bei dem ein Punkt im Raum vor beiden Bildebenen liegt.
 Mit dieser Überprüfung kann die zweite Kameramatrix $P'=[R|t]$ bestimmt werden.
-Hier muss beachtet werden, dass $t$ ein Einheitsvektor ist nur maßstabsgetreu ist.
+Hier muss beachtet werden, dass $t$ ein Einheitsvektor und nur maßstabsgetreu ist~\cite[Kapitel 9.6.3]{hartley_2003}.
 
 
 \begin{figure}[h!]
@@ -130,19 +130,17 @@ Hier muss beachtet werden, dass $t$ ein Einheitsvektor ist nur maßstabsgetreu i
     \label{fig:theory-essential-matrix-geometry}
 \end{figure}
 
-\section{Wie funktioniert Photogrammetry?}
-
 \section{Kamerakalibrierung}
-Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parameter der Kameramatrix und dem Verzerrungsparameter. 
-Die Kameramatrix wird in XXX erklärt.
-Der Verzerrungsparameter werden genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
+Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parametern der Kameramatrix und den Verzerrungsparametern. 
+Die Kameramatrix wird in \cref{sec:pinhole-camera-model} erklärt.
+Die Verzerrungsparameter werden genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
 Hierbei wird zwischen zwei Arten der Verzerrung unterschieden: radiale und tangentiale Verzerrung.
 Radiale Verzerrung entsteht durch die runde Form der Linse, wodurch die Pixel am Bildrand verzerrt werden.
 Diese Verzerrung kann bei manchen Linsen zunehmen, je weiter ein Strahl entfernt vom Zentrum auf die Linse trifft. 
 Diese Art der Verzerrung kann mathematisch als Taylorreihe um $r = 0$ und dem Termen $k_1, k_2$ und $k_3$ beschrieben werden.
 Ein Punkt $(x, y)$ kann somit als $(x_{\text{corrected}},y_{\text{corrected}})$ ohne Verzerrung ausgedrückt werden, wobei gilt:
 \[x_\text{corrected} = x \cdot (1 + k_1r^2 + k_2r^4 + k_3r^6)\]
-\[y_\text{corrected} = x \cdot (1 + k_1r^2 + k_2r^4 + k_3r^6)\]
+\[y_\text{corrected} = y \cdot (1 + k_1r^2 + k_2r^4 + k_3r^6)\]
 Tangentiale Verzerrung entsteht durch Herstellungsfehler, wodurch die Linse nicht genau parallel zur Abbildungsebene liegt.  
 Sie wird durch die Parameter $p_1$ und $p_2$ beschrieben, wodurch ein Punkt $(x,y)$ durch $(x_{\text{corrected}},y_{\text{corrected}})$ ohne Verzerrung dargestellt wird. 
 Dabei gilt:
