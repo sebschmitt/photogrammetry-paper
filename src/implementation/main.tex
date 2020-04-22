@@ -60,7 +60,7 @@ endforeach()
 \section{Kommandozeilenargumente}
 Die einzelnen Schritte der Pipeline werden mittels Kommandozeilenargumente konfiguriert.
 Zum Parsen der übergebenen Argumente wurde ein Argumentparser geschrieben.
-Dieser ist in \emph{include/argparser.hpp} spezifiert und in \emph{src/argparser.c} implementiert.
+Dieser ist in \emph{include/argparser.hpp} spezifiziert und in \emph{src/argparser.c} implementiert.
 Er beinhaltet den Namespace \emph{argparser} sowie zwei Klassen:
 \begin{itemize}
 \item \textbf{Argument}, repräsentiert ein Arguments (Name, Beschreibung, ob es übergeben wurde, welcher Wert übergeben wurde, ob es übergeben werden muss)
@@ -114,6 +114,26 @@ Danach wird das Argument dem ArgumentParser hinzugefügt.
 Mit der Funktion \emph{parseArguments(argc, argv)} wird das eigentliche Verarbeiten der Argumente durchgeführt.
 Mittels der Funktion \emph{isFound()} wird nun überprüft, ob das Argument übergeben wurde.
 Der übergebene Wert kann nun mittels \emph{getValue<string>()} als String weiter verarbeitet werden.
+
+In \autoref{tab:arguments} sind alle verfügbaren Argumente so wie eine Beschreibung aufgelistet.
+
+\begin{table}[]
+\centering
+\begin{tabularx}{\textwidth}{ |l|X| }
+\hline
+Name              & Beschreibung                                                                                                              \\ \hline
+loadCalibration   & Dateipfad, aus dem die Kalibrierung geladen wird, kann nicht gleichzeitig mit calibrationImages werden                    \\
+saveCalibration   & Dateipfad, in dem die Kalibrierung gespeichert wird                                                                       \\
+calibrationImages & Ordnerpfad, Bilder welche zur Kalibrierung verwendet werden, kann nicht gleichzeitig mit loadCalibration verwendet werden \\
+calibrateRow      & Anzahl der Zeilen des Kalibrierungsmusters                                                                                \\
+calibrateColumn   & Anzahl der Spalten des Kalibrierungsmusters                                                                               \\
+matchImages       & Ordnerpfad, Bilder, welche zum Matching verwendet werden                                                                  \\
+out               & Dateipfad, in den die Punkte exportiert werden                                                                            \\
+matchOutput       & Ordnerpfad, visueller Export aller Matches                                                                                \\ \hline
+\end{tabularx}
+\caption{Übersicht über alle verfügbaren Argumente}
+\label{tab:arguments}
+\end{table}
 
 \section{Kamera Kalibrierung}
 
