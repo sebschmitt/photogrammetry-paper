@@ -1,0 +1,32 @@
+\section{Rekonstruktion}
+
+
+In diesem Abschnitt werden die einzeln Schritte zum Rekonstruieren der Korrespondenzen erklärt, die im vorherigen Prozess gebildet worden sind. 
+Für die Rekonstruktion wird die Klasse \emph{SceneReconstructor} in der Datei \emph{reconstruction.hpp} definiert und in \emph{reconstruction.cpp} implementiert. 
+Die Klasse besitzt einen Konstruktor, welche eine Instanz der Calibration Klasse als Argument benötigt. 
+Mit der Instanz wird die private Member-Variable \emph{calbiration} instanziiert, so dass sie später bei manchen Berechnungen verwendet werden kann.
+Des Weiteren wird öffentlich die Methode \emph{reconstructScenes} definiert.
+Diese Methode erfordert eine Instanz der Iterator-Klasse mit dem ImagePair als Template-Type. %TODO: check spelling
+Mit dem Iterator werden in der Methode die korrespondierenden Bildpunkte rekonstruiert.
+Dabei wird darauf geachtet, dass die rekonstruierten Punkte der einzelnen Paare später auch zusammen passen.
+Wie in XXX zusehen ist, werden einige weitere private Methoden für die Klasse definiert.
+Diese werden in den folgend Paragraphen erläutert, wenn sie für bestimmte Berechnungen genutzt werden.
+
+Die Rekonstruktion wird mit den folgenden 4 Schritten durchgeführt:
+
+\begin{enumerate}
+    \item Lokale Rotation \& Translation bestimmen
+    \item globale Translation berechnen
+    \item Projektionsmatrix berechnen
+    \item Triangulation
+    \item Skalieren
+        \begin{enumerate}
+            \item skalierte globale Translation berechnen
+            \item Projektionsmatrix berechnen
+            \item Triangulation
+        \end{enumerate}
+\end{enumerate}
+
+
+
+
