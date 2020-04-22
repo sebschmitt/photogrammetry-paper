@@ -175,11 +175,15 @@ Die Auto-Kalibrierung wird häufig bei der 3D Modellierung eingesetzt~\cite{remo
 In vielen Computer Vision Anwendungen ist das Erkennen, Beschreiben und finden von Übereinstimmungen von Features ein wichtiger Bestandteil~\cite{hassaballah_2016}.
 Unter Anderem werden den bei Methoden der 3D Rekonstruktion, wie Sfm, korrespondierende Bildpunkte in verschiedenen Bildern benötigt, um eine abgebildete Szene rekonstruieren zu können.
 
+In~\cite{hassaballah_2016} wird \emph{Feature Matching} als das Bilden von Korrespondenzen zwischen zwei Bildern der gleichen Szene bzw.\ Objekts beschrieben.
+Dazu werden Keypoints bzw.\ Features in den einzelnen Bildern erkannt und durch Deskriptoren beschrieben.
 In~\cite[Kapitel 16]{kaehler_2016} werden Keypoints bzw.\ Features als \enquote{a small portion of an image that, for one reason or another, is unusually distinctive, and which we believe we might be
 able to locate in another related image} beschrieben.
-Im gleichen Buch werden die Deskriptoren als \enquote{some mathematical construction, typically (but not always) a vector of floating-point values, which somehow describes an individual keypoint, and which can be used to determine whether---in some context---two keypoints are ``the same.''}
+Im gleichen Buch werden die Deskriptoren beschrieben als \enquote{some mathematical construction, typically (but not always) a vector of floating-point values, which somehow describes an individual keypoint, and which can be used to determine whether---in some context---two keypoints are ``the same.''}
+Mit Hilfe der Deskriptoren kann ein Distanzmaß definiert werden, um ihre Ähnlichkeit zu einander zu testen.
 
-In~\cite{hassaballah_2016} werden die folgenden Eigenschaft beschrieben, die wichtig für die Algorithmen sind, die die Features finden (auch genannt Feature Detectors):
+Algorithmen, die Features aus Bildern extrahieren, werden \emph{Feature Detector} genannt, während Algorithmen zum bilden der Deskriptoren \emph{Feature Descriptor} genannt werden~\cite{hassaballah_2016}.
+In~\cite{hassaballah_2016} werden die folgenden Eigenschaft beschrieben, die wichtig für Feature Descriptors sind:
 \begin{itemize}
     \item Robustheit: die Features sollten in der selben Position erkannt werden, unabhängig von der Skalierung, Rotation, Verschiebung etc.
     \item Wiederholbarkeit: Die selben Features der selben Szene bzw.\ Objekts sollen auch variierenden Konditionen wiedererkannt werden.
@@ -189,5 +193,6 @@ In~\cite{hassaballah_2016} werden die folgenden Eigenschaft beschrieben, die wic
     \item Quantität: es sollen alle oder möglichst viele Features in einem Bild gefunden werden.
 \end{itemize}
 Wie wichtig die Eigenschaften im Vergleich zu einander sind, hängt von dem Anwendungsfall ab.
+
 
 
