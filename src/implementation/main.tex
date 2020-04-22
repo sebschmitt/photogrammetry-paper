@@ -161,11 +161,11 @@ Danach wird jedes Bild geladen und mit dem Faktor zwei runter skaliert um die Be
 Dafür wird OpenCVs \emph{resize} Funktion verwendet.
 Danach wird das Bild in ein Graustufenbild konvertiert.
 Dann wird OpenCVs \emph{findChessboardCorners} aufgerufen.
-Als Parameter werden das Bild, die Dimension des Schachbretts, einen Vektor von Punkten, in welchem die gefundenen Ecken gespeichert werden, sowie die Flags \emph{CALIB_CB_ADAPTIVE_THRESH} und \emph{CALIB_CB_FILTER_QUADS} verwendet.
-\emph{CALIB_CB_ADAPTIVE_THRESH} sorgt dafür, dass adaptive Schwellenwerte verwendet werden so das die Kacheln des Schachbretts nicht vollkommen schwarz bzw. weiß sein muss.
+Als Parameter werden das Bild, die Dimension des Schachbretts, einen Vektor von Punkten, in welchem die gefundenen Ecken gespeichert werden, sowie die Flags \emph{CALIB\_CB\_ADAPTIVE\_THRESH} und \emph{CALIB\_CB\_FILTER\_QUADS} verwendet.
+\emph{CALIB\_CB\_ADAPTIVE\_THRESH} sorgt dafür, dass adaptive Schwellenwerte verwendet werden so das die Kacheln des Schachbretts nicht vollkommen schwarz bzw. weiß sein muss.
 Es wird, entgegen des Standardverhalten, kein Schwellwert anhand der durchschnittlichen Helligkeit verwendet.
 Nach dem setzen des Schwellwerts versucht der Algorithmus Vierecke zu lokalisieren.
-Wenn \emph{CALIB_CB_FILTER_QUADS} gesetzt ist, werden zusätzlich weitere Einschränkungen getroffen um falsche Vierecke auszuschließen.
+Wenn \emph{CALIB\_CB\_FILTER\_QUADS} gesetzt ist, werden zusätzlich weitere Einschränkungen getroffen um falsche Vierecke auszuschließen.
 Falls \emph{findChessboardCorners} ein Schachbrettmuster erkannt hat, wird die Präzision der gefundenen Ecken mittels \emph{cornerSubPix} erhöht.
 Auch wenn \emph{cornerSubPix} von \emph{findChessboardCorners} automatisch aufgerufen wird, so kann die Präzision noch weiter erhöht werden, in dem \emph{cornerSubPix} erneut mit enger gewählten Parametern aufgerufen wird.
 
