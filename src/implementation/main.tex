@@ -9,7 +9,7 @@ Zusätzlich wird auf die Implementierung der einzelnen Schritte der SfM Pipeline
 Die Applikation wird in C++ entwickelt.
 Auch wenn Performance kein Ziel ist, wurde C++ gewählt um eine höhere Performance zu erreichen.
 Einzige Abhängigkeit ist die offene Bibliothek OpenCV, siehe dazu \ref{sec:opencv}.
-Zur Buildsteuerung wird das quelloffene Tool CMake verwendet.
+Zur Buildsteuerung wird das quelloffene Tool CMake\footnote{https://cmake.org/} verwendet.
 
 Das Projekt ist folgendermaßen strukturiert:
 
@@ -30,7 +30,7 @@ CMake Konfiguration
 }
 
 
-\subsection{OpenCV}\label{sec:opencv}
+\section{OpenCV}\label{sec:opencv}
 Es wird OpenCV in der Version 4.2.0 mit dem Modul OpenCV Contrib verwendet.
 OpenCV Contrib beinhaltet OpenCV Module, welche jedoch nicht stabil genug sind um Teil der offiziellen OpenCV Distribution zu sein \cite[README.md]{opencv_2013}.
 OpenCV wurde mit folgenden Optionen kompiliert:
@@ -60,6 +60,8 @@ endforeach()
 \section{Kommandozeilenargumente}
 Die einzelnen Schritte der Pipeline werden mittels Kommandozeilenargumente konfiguriert.
 Zum Parsen der übergebenen Argumente wurde ein Argumentparser geschrieben.
+Dieser akzeptiert Argumente in der Form \emph{-Argumentname}, wobei es egal ist wie viele Bindestriche vor dem Argumentnamen stehen.
+Da nach jedem Bindestrich ein neues Argument beginnt, ist es nicht möglich Bindestriche innerhalb von Argumentnamen zu verwenden.
 Dieser ist in \emph{include/argparser.hpp} spezifiziert und in \emph{src/argparser.c} implementiert.
 Er beinhaltet den Namespace \emph{argparser} sowie zwei Klassen:
 \begin{itemize}
@@ -104,7 +106,7 @@ int main(int argc, char *argv[]) {
 }
 \end{lstlisting}
 
-Der Argumentparser kann wie folgt benutzt werden:\\
+Der Argumentparser kann wie in \autoref{lst:argparser_example} zu sehen ist verwendet werden:\\
 Zunächst wird eine Instanz von \emph{ArgumentParser} erzeugt.
 Als Parameter wird der Applikationsname übergeben.
 Dieser wird beim Aufruf der Applikation mit dem Argument \emph{-help} angezeigt.
@@ -136,6 +138,57 @@ matchOutput       & Ordnerpfad, visueller Export aller Matches                  
 \end{table}
 
 \section{Kamera Kalibrierung}
+Die Kalibrierung der Kamera wird von der Klasse \emph{Calibration} durchgeführt.
+\emph{KameraMatrix}, \emph{OptimalMatrix} sowie \emph{DistoritonCoefficients} werden in selbiger vorgehalten, so dass einfach ein \emph{Calibration} Objekt an die weiteren Schritte der Pipeline weitergeleitet werden.
+Die Klasse \emph{Calibration} ist in \emph{include/calibration.hpp} spezifiziert und in \emph{src/calibration.cpp} implementiert.
+Der Konstruktor benötigt keine Argumente.
+Die Klasse stellt folgende Methoden zur Verfügung:
+\begin{itemize}
+\item \emph{cv::Mat\& getCameraMatrix()} gibt die Kamera-Matrix zurück
+\item \emph{void calibrate(std::vector<std::filesystem::path> imageFiles, cv::Size boardSize)} führt die eigentliche Kalibrierung der Kamera anhand der übergebenen Bilder durch, siehe dazu \autoref{sec:calibration-calibration}
+\item \emph{void loadCalibration(std::filesytem::path filepath)} Lädt die Kalibrierung aus der angegebenen Datei, siehe dazu \autoref{sec:calibration-load-save}
+\item \emph{void saveCalibration(std::filesystem::path filepath)} Speichert die Kalibrierung in der angegebenen Datei, siehe dazu \autoref{sec:calibration-load-save}
+\item \emph{void undistortImage(const cv::Mat\& image, cv::Mat\& undistoredImage)} entzerrt das übergebene Bild und speichert das entzerrte Bild in \emph{undistoredImage}
+\end{itemize}
+
+\subsection{Kalibrierung}\label{sec:calibration-calibration}
+
+
+\subsection{Speichern und Laden}\label{sec:calibration-load-save}
+Zum Speichern und zum Laden wird OpenCVs \emph{FileStorage} verwendet.
+Dieser unterstützt die Dateiformate \emph{XML}, \emph{YAML} sowie \emph{JSON}.
+Konkret gespeichert werden die Matrizen \emph{cameraMatrix}, \emph{optimalCameraMatrix} sowie \emph{distortionCoefficients}.
+Für jede dieser Variablen wurde eine Konstante definiert welche dem FileStorage als Schlüssel dient.
+In \autoref{lst:opencv_filestorage} ist zu sehen, wie mit einem \emph{FileStorage} Objekt gearbeitet werden kann.
+Bei \emph{cameraMatrixSerName}, \emph{optimalMatrixSerName} sowie \emph{distortionCoefficientsSerName} handelt es sich dabei um die konstanten Schlüssel unter welchen die Daten abgespeichert werden.
+Zu beachten ist, dass beim Erzeugen des \emph{FileStorage} Objekts kein Format angegeben wurde.
+Das zu verwendende Format wird anhand der Dateiendung bestimmt.
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:opencv_filestorage, caption=Schreiben mit OpenCV Filestorage]
+cv::FileStorage fs(filepath.string(), cv::FileStorage::WRITE);
+fs << cameraMatrixSerName << cameraMatrix;
+fs << optimalMatrixSerName << optimalCameraMatrix;
+fs << distortionCoefficientsSerName << distortionCoefficients;
+fs.release();
+\end{lstlisting}
+
+Analog zum Speichern kann \emph{FileStorage} zum Lesen verwendet werden (siehe \autoref{lst:opencv_filestorage_read}.
+Dafür kann man auf das \emph{FileStorage} Objekt wie auf ein assoziatives Array zugreifen (Zeile 2).
+Zusätzlich kann dann der Typ des Rückgabewerts festgelegt werden.
+In diesem Beispiel wird der unter dem Schlüssel \emph{cameraMatrixSerName} gespeicherte Wert als OpenCV Matrix geliefert.
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:opencv_filestorage_read, caption=Lesen mit OpenCV Filestorage]
+FileStorage fs(filepath.string(), FileStorage::READ);
+cameraMatrix = fs[cameraMatrixSerName].mat();
+[..]
+fs.release();
+\end{lstlisting}
+
+
+Eine von \emph{FileStorage} erzeugte XML Datei ist in \autoref{lst:opencv_filestorage_output} zu sehen.
+
+
+
 
 \section{Feature Identifizierung}
 
