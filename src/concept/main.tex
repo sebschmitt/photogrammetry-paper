@@ -4,7 +4,7 @@
 In diesem Abschnitt wird kurz unser Konzept für die Umsetzung von SfM erläutert. 
 Insbesondere wird dabei erläutert, was in den einzelnen Schritten durchgeführt wird, und warum diese Schritte notwendig sind.
 Details zur Implementierung werden in Kapitel~\ref{sec:implementation} beschrieben.
-Konkret soll eine Kommandozeilen-Applikation entwickelt werden, welche eine Pipeline mit Prozessen zur Rekonstruktion von Bildpunkten bereitstellt.
+Konkret wird eine Kommandozeilen-Applikation entwickelt, welche eine Pipeline mit Prozessen zur Rekonstruktion von Bildpunkten bereitstellt.
 Die Pipeline ist in Abb.~\ref{fig:concept-pipeline} dargestellt.
 Parameter, die für die einzelnen Prozesse benötigt werden, werden als Kommandozeilen-Argumente übergeben.
 
@@ -19,7 +19,7 @@ Dementsprechend müssen zusätzliche Bilder für die Kalibrierung vom Nutzer ber
 Der Nutzer muss dabei nur einen Ordnerpfad angeben, in dem sich die Bilder für die Kalibrierung befinden.
 Das Kalibrieren der Kamera kann sehr zeitaufwendig sein.
 Daher wird die Möglichkeit bereitgestellt, die Kameraparameter in eine Datei zu exportieren.
-Diese Datei kann dann geladen werden, so dass eine erneute Kalibrierung mit dem Schachbrettmuster nicht mehr nötig ist. 
+Diese Datei kann dann geladen werden, so dass eine erneute Kalibrierung nicht notwendig ist.
 Es werden jedoch keine weiteren Features für die Verwaltung der Kalibrierungen angeboten.
 Der Nutzer ist also selbst dafür verantwortlich zu wissen, welche Datei zu welcher Kamera gehört und welche Kalibrierungsdatei für die Pipeline benötigt wird. 
 
@@ -27,7 +27,7 @@ Der zweite Prozess umfasst das Feature Matching, welches benötigt wird, um korr
 Diese Bilder werden wie bei der Kalibrierung vom Nutzer bereitgestellt, in dem ein Ordnerpfad angeben wird, der alle Bilder enthält. 
 Die Bilder werden in alphabetischer Reihenfolge geladen und nach Keypoints und ihren Deskriptoren durchsucht.
 Anschließend werden Paare aus benachbarten Bildern gebildet, in denen nach übereinstimmenden Keypoints gesucht werden.
-Somit ist es Aufgabe des Nutzers, die Bilder so zu sortieren, dass es möglichst wenig Bewegung zwischen aufeinanderfolgenden Bildern gibt so dass mehr Übereinstimmungen gefunden werden können.
+Somit ist es Aufgabe des Nutzers, die Bilder so zu sortieren, dass es möglichst wenig Bewegung zwischen aufeinanderfolgenden Bildern gibt, so dass mehr Übereinstimmungen gefunden werden können.
 Die korrespondierenden Bildpunkte, welche sich aus den Keypoints ergeben, werden im nächsten Prozess zum Rekonstruieren der Bilder genutzt.
 
 Im dritten Prozess \emph{Rekonstruktion} wird die Geometrie der Szenen der Bildpaare ermittelt und Raumpunkte durch die korrespondierenden Bildpunkte bestimmt.
