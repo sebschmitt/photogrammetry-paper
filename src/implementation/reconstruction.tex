@@ -30,7 +30,7 @@ Im ersten Schritt muss für ein Bildpaar die Rotation und Translation der einen 
 Dazu kann wie in \cref{sec:essential-matrix} beschrieben wird, die essentielle Matrix berechnet und in $R$ und $t$ zerlegt werden.
 OpenCV bietet dafür die Funktionen \emph{findFundamentalMat} und \emph{recoverPose} an.
 In Zeile XXX des Listings XXX wird findFundamentalMat aufgerufen. 
-Hier bei werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix übergeben.
+Hierbei werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix übergeben.
 Mit den weiteren drei Argumenten wird der angewendete Algorithmus gewählt und angepasst.
 Mit dem Literal \emph{cv::RANSAC} wird der Ransac Algorithmus gewählt und so angepasst, das mit 99.9\% Wahrscheinlichkeit die bestimmte Matrix korrekt ist.
 Als Threshold für Punkte, die innerhalb der essentielle Matrix passen, wir 1 Pixel verwendet. 
@@ -43,7 +43,7 @@ Dazu werden neben der essentiellen Matrix auch die wieder die korrespondierenden
 % erkläre kurz die Methode
 
 Die zuvor berechnete Rotationsmatrix und Translationsvektor beschreiben nur die Ausrichtung und der Verschiebung der rechten Kamera im Vergleich zur linken Kamera.
-Die Punkte, die mit dieser Pose rekonstruiert werden, werden in einem Koordinatensystem beschrieben, dessen Zentrum und Ausrichtung durch die linke Kamera definiert wird.
+Die Punkte, die mit dieser Pose rekonstruiert werden, werden in einem Koordinatensystem beschrieben, dessen Zentrum und Ausrichtung durch die linke Kamera definiert ist.
 Dies gilt für jedes Bildpaar in der Sequenz, d.h.\ jedes Bildpaar definiert ihr eigenes Koordinatensystem.
 Damit alle rekonstruierten Bildpunkte im gleichen Koordinatensystem dargestellt werden, müssen $R$ und $t$ transformiert werden.
 Die Transformation des nten Bildpaars kann die mit 
@@ -78,14 +78,13 @@ Dazu wird in XXX die Methode \emph{computePoseAndProjection} implementiert, die 
 In Schritt 4 werden die Bildpunkte mit der Methode \emph{triangulatePoints} von Opencv rekonstruiert.
 Sie benötigt als Argumente die Projektionsmatrizen beider Kameras, sowie die Korrespondenzen aus beiden Bilder.  
 Zurückgegeben wird eine $4\times N$ Opencv Matrix, die die rekonstruierten Punkte in homogenen Koordinaten repräsentiert.
-Hier kommt noch was genaueres
 
 Die Rekonstruktion des ersten Bildpaares ist mit diesem Schritt bereits vollendet.
 Durch die Methode \emph{setReconstruction} werden die Ergebnisse der Rekonstruktion für die aktuelle ImagePair Instanz gespeichert.
 Dieser Methode werden die Projektionsmatrix, die Transformationsmatrix, die rekonstruierten Punkte und die Maske der Ausreißer als Argumente übergeben. 
 Wie in XXX zusehen ist, werden die Projektions- und Transformationsmatrix einfach den Member-Variablen zugewiesen.
 Die rekonstruierten Punkte werden dahingegen gefiltert und zu einem vector<cv::Point3f> konvertiert.
-Dabei werden alle Ausreißer, die in der notiert sind, und alle Punkte, die einen negativen Wert für ihre Z-Koordinate haben.  
+Unteraderem werden alle Ausreißer, die durch die Maske angegeben werden, sowie alle Punkte mit einem negativen Z-Wert gefiltert.
 Grund dafür ist, dass die Richtung der Kameras in Richtung der Z-Achse definiert ist.
 Ein Punkt mit negativer Z-Achse liegt also hinter der Kamera, was physikalisch unmöglich ist und daher gefiltert werden muss.
 Die Punkte liegen in homogenen Koordinaten vor, weswegen jeder Punkt vor dem Filtern durch das vierte Element geteilt werden muss.
@@ -97,7 +96,7 @@ Diese Abbildung wird benötigt, um im fünften Schritt die Skalierung durchführ
 Im fünften und letzten Schritt wird die Skalierung für das aktuelle Bildpaar bestimmt, damit alle Punkte mit dem selben Maßstab rekonstruiert werden.  
 Dazu werden die Abstände der rekonstruierten Punkte aus dem vorherigen Bildpaar mit den Abständen der rekonstruierten Punkte des aktuellen Paars verglichen.
 Es muss hierbei darauf geachtet werden, dass die verwendeten Punkte des vorherigen Paars jeweils Korrespondenzen im aktuellen Bild haben.
-Die Abbildung \cref{fig:sfm-scaling} illustriert diesen Zusammenhang.
+Die \cref{fig:sfm-scaling} illustriert diesen Zusammenhang.
 Mit dem Verhältnis der Abstände, kann der Translationsvektor $t$ entsprechend skaliert werden.
 
 
@@ -107,12 +106,11 @@ Die Indizes werden benötigt, um mit der Methode \emph{getMatchingWorldPoints} d
 Für jeden jedes Feature Match werden die entsprechenden Indizes der linken und rechten Bildpunkte in den Member-Variablen gespeichert.
 Die Indizes der Bildpunkte des linken Bilds wird der Methode \emph{getMatchingWorldPoints} übergeben, die auf die Instanz des vorherigen Bildpaars angewendet wird.
 Es ist somit möglich die korrespondierenden Matches und die damit verbundenen Weltpunkte zu bestimmen.
-Anschließend werden Paare der Weltpunkte des vorherigen Paars und den respektiven Weltpunkten des
-aktuellen Bildpaars.
+Anschließend werden Paare der Weltpunkte des vorherigen Bildpaars und den respektiven Weltpunkten des aktuellen Bildpaars gebildet.
 Die Distanz zwischen den jeweiligen Paaren werden als Vektorbetrag berechnet.
 Die Skalierung für das aktuelle Bildpaar ist das Mittel aller Distanzverhältnisse.
 Der Translationsvektor $t$ wird mit der Skalierung multipliziert und es werden die Schritte 2 bis 5 wiederholt.
-Zum Schluss kann wird die Methode \emph{setReconstruction} aufgerufen, um die skalierten Weltpunkte zu speichern.
+Zum Schluss wird die Methode \emph{setReconstruction} aufgerufen, um die skalierten Weltpunkte zu speichern.
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/nghiaho_2017_sfm_scaling}
     \caption{~\cite{nghiaho_2017}}
