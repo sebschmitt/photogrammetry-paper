@@ -4,7 +4,7 @@ Zur Feature Identifizierung wird der Algorithmus \emph{Scale-Invariant Feature T
 SIFT bietet den Vorteil dass viele Keypoints gefunden werden und der Algorithmus, in gewissen Grenzen, invariant gegenüber Transformationen wie Translation, Rotation und Skalierung ist.
 Zudem bietet SIFT gegenüber Weiterentwicklungen wie Speeded Up Robust Features (SURF) den Vorteil, dass das Patent mittlerweile ausgelaufen ist und der Algorithmus jetzt frei verwendet werden kann.
 
-Die Feature Identifizierung findet in der Funktion \emph{generateSequence} der Klasse \emph{SequenceMatcher} statt.
+Die Feature Identifizierung findet in der Methode \emph{generateSequence} der Klasse \emph{SequenceMatcher} statt.
 Hierzu werden für jedes Bild folgende Schritte durchgeführt:\\
 Zunächst wird ein ImageContainer-Struktur erzeugt.
 Danach wird das Bild mittels \emph{cv::imread} als \emph{cv::Mat} eingelesen.
