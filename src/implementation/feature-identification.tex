@@ -1,6 +1,8 @@
-\section{Feature Identifizierung}\ohead{Sebastian Schmitt}
+\section{Feature Identifizierung}\label{sec:feature-identification}
+\ohead{Sebastian Schmitt}
 Zur Feature Identifizierung wird der Algorithmus \emph{Scale-Invariant Feature Transform} (SIFT) verwendet.
-SIFT wurde gewählt da...
+SIFT bietet den Vorteil dass viele Keypoints gefunden werden und der Algorithmus, in gewissen Grenzen, invariant gegenüber Transformationen wie Translation, Rotation und Skalierung ist.
+Zudem bietet SIFT gegenüber Weiterentwicklungen wie Speeded Up Robust Features (SURF) den Vorteil, dass das Patent mittlerweile ausgelaufen ist und der Algorithmus jetzt frei verwendet werden kann.
 
 Die Feature Identifizierung findet in der Funktion \emph{generateSequence} der Klasse \emph{SequenceMatcher} statt.
 Hierzu werden für jedes Bild folgende Schritte durchgeführt:\\
