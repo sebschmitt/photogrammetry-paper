@@ -11,6 +11,8 @@ Zum Matchen wird OpenCVs Bruteforce Matcher \emph{cv::BFMatcher} verwendet.
 Dieser wird mit dem Parameter \emph{cv::NORM\_L2} initisalisiert, um \emph{L2} als Normierungstyp zu verwenden.
 \emph{L1} und \emph{L2} sind dabei die empfohlenen Normierungstypen für SIFT.
 Da bei Tests mit \emph{L2} bessere Matches gefunden werden konnten als mit \emph{L1}, wird \emph{L2} verwendet.
+Zusätzlich wird die Option \emph{crossCheck} des Bruteforce Matcher aktiviert.
+Dadurch wird verhindert, dass ein Keypoint mit mehreren Keypoints abgeglichen wird.
 Für jedes Bildpaar wird nun die Funktion \emph{match} des Bruteforce Matchers aufgerufen.
 Übergeben werden jeweils die Feature-Deskriptoren sowie ein Pointer zu einem \emph{std::vector<cv::DMatch>} in welchem die gefundenen Matches gespeichert werden.
 Danach wird für jedes Paar basierend auf den Bildpunkten eine Fundamental Matrix gebildet.
