@@ -1,0 +1,50 @@
+\section{Projektstruktur}\ohead{Sebastian Schmitt}
+Die Applikation wird in C++ entwickelt.
+Auch wenn Performance kein Ziel ist, wurde C++ gewählt um eine höhere Performance zu erreichen.
+Einzige Abhängigkeit ist die offene Bibliothek OpenCV, siehe dazu \ref{sec:opencv}.
+Zur Buildsteuerung wird das quelloffene Tool CMake\footnote{https://cmake.org/} verwendet.
+
+Das Projekt ist folgendermaßen strukturiert:
+
+\dirtree{%
+.1 yapgt.
+.2 include \ldots{} \begin{minipage}[t]{12cm}
+Header-Dateien
+\end{minipage}.
+.2 resources \ldots{} \begin{minipage}[t]{12cm}
+Bilder zum Testen von Kalibrierung und Feature-Matching
+\end{minipage}.
+.2 src \ldots{} \begin{minipage}[t]{12cm}
+Implementierung
+\end{minipage}.
+.2 CMakeLists.txt \ldots{} \begin{minipage}[t]{12cm}
+CMake Konfiguration
+\end{minipage}.
+}
+
+
+\section{OpenCV}\label{sec:opencv}
+Es wird OpenCV in der Version 4.2.0 mit dem Modul OpenCV Contrib verwendet.
+OpenCV Contrib beinhaltet OpenCV Module, welche jedoch nicht stabil genug sind um Teil der offiziellen OpenCV Distribution zu sein \cite[README.md]{opencv_2013}.
+OpenCV wurde mit folgenden Optionen kompiliert:
+\begin{itemize}
+	\item OPENCV\_EXTRA\_MODULES\_PATH um den Pfad zu OpenCV Contrib festzulegen
+	\item OPENCV\_ENABLE\_NONFREE um auch nicht freie Algorithmen zu kompilieren
+\end{itemize}
+Auch wenn es Anforderung ist nur freie Bibliotheken zu verwenden, ist der Flag OPENCV\_ENABLE\_NON\_FREE notwendig.
+Der in dieser Arbeit verwendete Algorithmus Scale-Invariant Feature Transform (SIFT) war bis 06. März 2020 von der University of British Columbia patentiert\footnote{siehe dazu https://patents.google.com/patent/US6711293} und ist daher in der verwendeten OpenCV Version nur mit OPENCV\_ENABLE\_NON\_FREE nutzbar.
+SIFT ist Teil des Moduls Features2D extra (xfeatures2d) welches Teil von OpenCV Contrib ist und sowohl experimentelle als auch nicht freie Algorithmen beinhaltet.
+
+Um die Applikation auch nutzen zu können ohne vorab OpenCV zu installieren oder zu kompilieren wurde CMake angewiesen, OpenCV statisch zu linken (siehe \autoref{lst:cmake_opencv_static}, Zeilen 1-4).
+Zusätzlich kopiert CMake alle gelinkten Bibliotheken, auch wenn diesen nicht referenziert werden, in den Ausgabeordner, damit diese nicht von Hand kopiert werden müssen (\autoref{lst:cmake_opencv_static}, Zeilen 6-8).
+
+\begin{lstlisting}[numbers=left, breaklines=true,breakatwhitespace=false,label=lst:cmake_opencv_static, caption=Ausschnitt von CMakeLists.txt um OpenCV statisch zu linken]
+set(OPENCV_STATIC ON)
+find_package(OpenCV REQUIRED)
+[..]
+target_link_libraries(yapgt ${OpenCV_LIBS})
+[..]
+foreach(CVLib ${OpenCV_LIBS})
+    file(COPY ${_OpenCV_LIB_PATH}/${CVLib}${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}d.dll DESTINATION ${CMAKE_BINARY_DIR})
+endforeach()
+\end{lstlisting}

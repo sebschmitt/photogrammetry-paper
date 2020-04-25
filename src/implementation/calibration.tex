@@ -1,0 +1,69 @@
+\section{Kamera Kalibrierung}\ohead{Sebastian Schmitt}
+Die Kalibrierung der Kamera wird von der Klasse \emph{Calibration} durchgeführt.
+\emph{KameraMatrix}, \emph{OptimalMatrix} sowie \emph{DistoritonCoefficients} werden in selbiger vorgehalten, so dass einfach ein \emph{Calibration} Objekt an die weiteren Schritte der Pipeline weitergeleitet werden.
+Die Klasse \emph{Calibration} ist in \emph{include/calibration.hpp} spezifiziert und in \emph{src/calibration.cpp} implementiert.
+Der Konstruktor benötigt keine Argumente.
+Die Klasse stellt folgende Methoden zur Verfügung:
+\begin{itemize}
+\item \emph{cv::Mat\& getCameraMatrix()} gibt die Kamera-Matrix zurück
+\item \emph{void calibrate(std::vector<std::filesystem::path> imageFiles, cv::Size boardSize)} führt die eigentliche Kalibrierung der Kamera anhand der übergebenen Bilder durch, siehe dazu \autoref{sec:calibration-calibration}
+\item \emph{void loadCalibration(std::filesytem::path filepath)} Lädt die Kalibrierung aus der angegebenen Datei, siehe dazu \autoref{sec:calibration-load-save}
+\item \emph{void saveCalibration(std::filesystem::path filepath)} Speichert die Kalibrierung in der angegebenen Datei, siehe dazu \autoref{sec:calibration-load-save}
+\item \emph{void undistortImage(const cv::Mat\& image, cv::Mat\& undistoredImage)} entzerrt das übergebene Bild und speichert das entzerrte Bild in \emph{undistoredImage}
+\end{itemize}
+
+\subsection{Kalibrierung}\label{sec:calibration-calibration}
+Zunächst wird ein Vektor aus Punkten erzeugt welcher die Koordinaten aller Schachbrettfelder hält.
+Die Z-Komponente des Vektors ist dabei immer 0.
+Es wird davon ausgegangen, dass das Schachbrettmuster auf allen Bildern vollständig zu sehen ist.
+Deshalb kann dieser Vektor später für jedes Bild verwendet werden.
+
+Danach wird jedes Bild geladen und mit dem Faktor zwei runter skaliert um die Berechnungen zu beschleunigen.
+Dafür wird OpenCVs \emph{resize} Funktion verwendet.
+Danach wird das Bild in ein Graustufenbild konvertiert.
+Dann wird OpenCVs \emph{findChessboardCorners} aufgerufen.
+Als Parameter werden das Bild, die Dimension des Schachbretts, einen Vektor von Punkten, in welchem die gefundenen Ecken gespeichert werden, sowie die Flags \emph{CALIB\_CB\_ADAPTIVE\_THRESH} und \emph{CALIB\_CB\_FILTER\_QUADS} verwendet.
+\emph{CALIB\_CB\_ADAPTIVE\_THRESH} sorgt dafür, dass adaptive Schwellenwerte verwendet werden so das die Kacheln des Schachbretts nicht vollkommen schwarz bzw. weiß sein muss.
+Es wird, entgegen des Standardverhalten, kein Schwellwert anhand der durchschnittlichen Helligkeit verwendet.
+Nach dem setzen des Schwellwerts versucht der Algorithmus Vierecke zu lokalisieren.
+Wenn \emph{CALIB\_CB\_FILTER\_QUADS} gesetzt ist, werden zusätzlich weitere Einschränkungen getroffen um falsche Vierecke auszuschließen.
+Falls \emph{findChessboardCorners} ein Schachbrettmuster erkannt hat, wird die Präzision der gefundenen Ecken mittels \emph{cornerSubPix} erhöht.
+Auch wenn \emph{cornerSubPix} von \emph{findChessboardCorners} automatisch aufgerufen wird, so kann die Präzision noch weiter erhöht werden, in dem \emph{cornerSubPix} erneut mit enger gewählten Parametern aufgerufen wird.
+
+Nach dem dieser Prozess für jedes Bild durchgeführt wurde, wird die eigentliche Kalibrierung durchgeführt.
+Dafür wird OpenCVs \emph{calibrateCamera} verwendet.
+Als Parameter werden ein Vektor von Vektoren der einzelnen, gefundenen Ecken, ein Vektor von Vektoren der Schachbrett Koordinaten, die Größe der Bilder sowie Variablen für Rückgabe von Kamera-Matrix, Verzerrungskoeffizienten, Rotationsvektor sowie Translationsvektor übergeben.
+
+
+
+\subsection{Speichern und Laden}\label{sec:calibration-load-save}
+Zum Speichern und zum Laden wird OpenCVs \emph{FileStorage} verwendet.
+Dieser unterstützt die Dateiformate \emph{XML}, \emph{YAML} sowie \emph{JSON}.
+Konkret gespeichert werden die Matrizen \emph{cameraMatrix}, \emph{optimalCameraMatrix} sowie \emph{distortionCoefficients}.
+Für jede dieser Variablen wurde eine Konstante definiert welche dem FileStorage als Schlüssel dient.
+In \autoref{lst:opencv_filestorage} ist zu sehen, wie mit einem \emph{FileStorage} Objekt gearbeitet werden kann.
+Bei \emph{cameraMatrixSerName} sowie \emph{distortionCoefficientsSerName} handelt es sich dabei um die konstanten Schlüssel unter welchen die Daten abgespeichert werden.
+Zu beachten ist, dass beim Erzeugen des \emph{FileStorage} Objekts kein Format angegeben wurde.
+Das zu verwendende Format wird anhand der Dateiendung bestimmt.
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:opencv_filestorage, caption=Schreiben mit OpenCV Filestorage]
+cv::FileStorage fs(filepath.string(), cv::FileStorage::WRITE);
+fs << cameraMatrixSerName << cameraMatrix;
+fs << distortionCoefficientsSerName << distortionCoefficients;
+fs.release();
+\end{lstlisting}
+
+Analog zum Speichern kann \emph{FileStorage} zum Lesen verwendet werden (siehe \autoref{lst:opencv_filestorage_read}.
+Dafür kann man auf das \emph{FileStorage} Objekt wie auf ein assoziatives Array zugreifen (Zeile 2).
+Zusätzlich kann dann der Typ des Rückgabewerts festgelegt werden.
+In diesem Beispiel wird der unter dem Schlüssel \emph{cameraMatrixSerName} gespeicherte Wert als OpenCV Matrix geliefert.
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:opencv_filestorage_read, caption=Lesen mit OpenCV Filestorage]
+FileStorage fs(filepath.string(), FileStorage::READ);
+cameraMatrix = fs[cameraMatrixSerName].mat();
+distortionCoefficients = fs[distortionCoefficientsSerName].mat();
+fs.release();
+\end{lstlisting}
+
+
+Eine von \emph{FileStorage} erzeugte XML Datei ist in \autoref{appendix:opencv_filestorage_example} \nameref{appendix:opencv_filestorage_example} zu sehen.
