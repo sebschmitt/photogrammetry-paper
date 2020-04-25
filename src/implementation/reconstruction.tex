@@ -76,11 +76,11 @@ Die rekonstruierten Punkte werden von triangulatePoints als eine $4\times N$ Ope
 Dabei entspricht eine Spalte der Matrix einen einzeln Punkt im Raum in homogenen Koordinaten.
 
 Die Rekonstruktion des ersten Bildpaares ist mit diesem Schritt bereits vollendet.
-Durch die Methode \emph{setReconstruction} werden die Ergebnisse der Rekonstruktion für die aktuelle ImagePair Instanz gespeichert.
+Durch die Methode \emph{setReconstruction} der ImagePair Klasse werden die Ergebnisse der Rekonstruktion für die aktuelle ImagePair Instanz gespeichert.
 Dieser Methode werden die Projektionsmatrix, die Transformationsmatrix, die rekonstruierten Punkte und die Maske der Ausreißer als Argumente übergeben. 
 Wie in XXX zusehen ist, werden die Projektions- und Transformationsmatrix einfach den Member-Variablen zugewiesen.
 Die rekonstruierten Punkte werden dahingegen gefiltert und zu einem vector<cv::Point3f> konvertiert.
-Unteraderem werden alle Ausreißer, die durch die Maske angegeben werden, sowie alle Punkte mit einem negativen Z-Wert gefiltert.
+Dabei werden alle Ausreißer, die durch die Maske angegeben werden, sowie alle Punkte mit einem negativen Z-Wert gefiltert.
 Grund dafür ist, dass die Richtung der Kameras in Richtung der Z-Achse definiert ist.
 Ein Punkt mit negativer Z-Achse liegt also hinter der Kamera, was physikalisch unmöglich ist und daher gefiltert werden muss.
 Die Punkte liegen in homogenen Koordinaten vor, weswegen jeder Punkt vor dem Filtern durch das vierte Element geteilt werden muss.
@@ -95,17 +95,16 @@ Es muss hierbei darauf geachtet werden, dass die verwendeten Punkte des vorherig
 Die \cref{fig:sfm-scaling} illustriert diesen Zusammenhang.
 Mit dem Verhältnis der Abstände, kann der Translationsvektor $t$ entsprechend skaliert werden.
 
-
 Bevor die Skalierung bestimmt werden kann, werden die rekonstruierten Punkte normalisiert und gefiltert.
-Gleichzeitig werden die Indizes der nicht Ausreißer in einem Vektor gespeichert. 
-Die Indizes werden benötigt, um mit der Methode \emph{getMatchingWorldPoints} der ImagePair Klasse die rekonstruierten Punkte des vorherigen Paars zu bestimmen.
+Gleichzeitig werden die Indizes der Einlieger in einem Vektor gespeichert. 
+Die Indizes werden benötigt, um mit der Methode \emph{getMatchingWorldPoints} der ImagePair Klasse die rekonstruierten Punkte des vorherigen Bildpaars zu bestimmen.
 Für jeden jedes Feature Match werden die entsprechenden Indizes der linken und rechten Bildpunkte in den Member-Variablen gespeichert.
 Die Indizes der Bildpunkte des linken Bilds wird der Methode \emph{getMatchingWorldPoints} übergeben, die auf die Instanz des vorherigen Bildpaars angewendet wird.
-Es ist somit möglich die korrespondierenden Matches und die damit verbundenen Weltpunkte zu bestimmen.
+Es ist somit möglich die Matches und die damit verbundenen Weltpunkte zu bestimmen.
 Anschließend werden Paare der Weltpunkte des vorherigen Bildpaars und den respektiven Weltpunkten des aktuellen Bildpaars gebildet.
 Die Distanz zwischen den jeweiligen Paaren werden als Vektorbetrag berechnet.
 Die Skalierung für das aktuelle Bildpaar ist das Mittel aller Distanzverhältnisse.
-Der Translationsvektor $t$ wird mit der Skalierung multipliziert und es werden die Schritte 2 bis 5 wiederholt.
+Der Translationsvektor $t$ wird mit der Skalierung multipliziert und es werden die Schritte 2 bis 4 wiederholt.
 Zum Schluss wird die Methode \emph{setReconstruction} aufgerufen, um die skalierten Weltpunkte zu speichern.
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/nghiaho_2017_sfm_scaling}
