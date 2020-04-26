@@ -26,7 +26,7 @@ Dementsprechend fehlen diese Flächen bei den rekonstruierten Punkten, wie in \c
 Die generelle Form des Sessels und der Kissen ist in dem Modell gut zu erkennen.
 Von der Decke ist nur ein streifen zu sehen, wo Matches an dem Text existieren.  
 Das Sitzkissen ist überhaupt nicht zu sehen.
-In \cref{fig:chair_model_2} ist das Modell von der anderen Seite und einem höheren Blickwinkel zu sehen.
+In \cref{fig:chair-model-2} ist das Modell von der anderen Seite und einem höheren Blickwinkel zu sehen.
 Hier sind mehrere Punktsammlungen zusehen, die das gleiche darstellen, aber verschoben sind.
 So etwa die Vorderseite und die Kissen des Sessels.
 Dies lässt eine ungenaue Skalierung des Translationsvektors vermuten.
@@ -74,7 +74,7 @@ Dies lässt eine ungenaue Skalierung des Translationsvektors vermuten.
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/chair_model_2.jpg}
     \caption{Das Sessel Modell in einem anderem Blickwinkel}
-    \label{fig:chair-model}
+    \label{fig:chair-model-2}
 \end{figure}
 
 
@@ -83,7 +83,7 @@ Im zweiten Testfall wird die Rekonstruktion eines Autos getestet.
 Insgesamt wurden 17 Bilder von einem schwarzen Skoda Fabia gemacht, die das Auto in verschiedenen Positionen zeigt.
 Die Tabelle~\cref{tab:car-results} zeigt Anzahl der rekonstruierten Punkte pro Bildpaar.
 Im Vergleich zum ersten Testfall gibt es hier deutlich weniger Matches, rekonstruierte Punkte und Punkte,die für die Skalierung verwendet worden sind.
-\cref{fig:car-second-pair, fig:car-second-pair-with-matches} zeigen das zweite Bildpaar vom Auto.
+\cref{fig:car-second-pair,fig:car-second-pair-with-matches} zeigen das zweite Bildpaar vom Auto.
 Hier ist sehen, dass dass die Keypoints der meisten Matches nicht auf auf dem Auto liegen.
 Statt dessen werden Matches eher an den Wänden, Pflanzen und auf dem Boden gefunden.
 Bei dem Auto selbst werden die Matches hauptsächlich nur am Nummernschild und vereinzelt in den Reflexionen der Umgebung gefunden.
@@ -124,19 +124,84 @@ Dies lässt auf einen Fehler in der Triangulation oder Skalierung der Punkte ver
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/car_second_pair.jpg}
     \caption{Das zweite Bildpaar zum Rekonstruieren des Autos.}
-    \label{fig:car-first-pair}
+    \label{fig:car-second-pair}
 \end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/car_second_pair_with_matches.jpg}
     \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
-    \label{fig:car-first-pair-with-matches}
+    \label{fig:car-second-pair-with-matches}
 \end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/car_model.jpg}
     \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
-    \label{fig:car-first-pair-with-matches}
+    \label{fig:car-model}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/car_model.jpg}
+    \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
+    \label{fig:car-model-2}
 \end{figure}
 
 \section{Fall 3: Hund}
+Im dritten Testfall wird versucht mit fünf Bildern einen Hund in einem Körbchen zu rekonstruieren, der in \cref{fig:dog-image} zu sehen ist.
+
+Bevor auf das Ergebnis der Rekonstruktion eingegangen wird, wird ein Problem beim Aufnehmen der Bilder erläutert.
+
+
+
+Die \cref{tab:dog-results} zeigt die Ergebnisse der Rekonstruktion.
+In allen Bildpaaren ist der Matches höher als im ersten Testfall.
+Betracht man jedoch in XXX wo die Matches liegen, dann fällt auf, dass keine auf dem Hund liegen.
+Statt dessen befinden sich alle Matches auf dem Teppich.
+Das Modell in Blender zeigt dem entsprechend nur eine Fläche, die aus beige Punkten besteht.
+Das Problem in diesem Testfall ist wie beim Auto und dem Sitzkissen des Sessels, dass der Hund keine auffälligen Kanten besitzt, die als Feature erkannt werden.
+
+\begin{table}
+    \begin{tabularx}{\textwidth}{c r r r r}
+        \toprule
+        Bildpaar &  Anzahl der Matches & Anzahl der Weltpunkte & Anzahl der Überlappende Weltpunkte & angewandte Skalierung \\ 
+        \midrule
+        1 & 4.799 & 4.786 & -  & - \\
+        2 & 6.450 & 6.421 & 2.127 & 0,835131 \\
+        3 & 6.525 & 6.472 & 2.763 & 0,892978 \\
+        4 & 7.520 & 7.489 & 2.867 & 0,975344 \\
+        4 & 7.462 & 7.444 & 3.215 & 0,801014 \\
+        4 & 3.024 & 2.984 & 1.651 & 0,93856  \\
+        4 & 6.071 & 6.009 & 1.337 & 1,42251  \\
+        4 & 7.893 & 7.874 & 3.091 & 0,707064 \\
+        4 & 6.917 & 4.350 & 1.924 & 7,01307  \\
+        \midrule
+        Summe & 11.714 & 11.661 & 3.693 & - \\
+        \bottomrule
+    \end{tabularx}
+    \caption{XX}
+    \label{tab:dog-results}
+\end{table}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/dog.jpg}
+    \caption{}
+    \label{fig:dog-image}
+\end{figure}
+
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/dog_first_pair_with_matches.jpg}
+    \caption{}
+    \label{fig:dog-first-pair-with-matches}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/dog_model.jpg}
+    \caption{}
+    \label{fig:dog-model}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/dog_model_2.jpg}
+    \caption{}
+    \label{fig:dog-model-2}
+\end{figure}
