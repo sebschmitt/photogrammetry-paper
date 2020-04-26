@@ -7,8 +7,7 @@ Die Testfälle sind dabei verschiedene Szenen mit mehreren Bildern von einem Obj
 Die Szenen und die Objekte sind dabei so gewählt, dass sie möglichst unterschiedlich sind in Bezug auf Größe und Beschaffenheit des Objekts.
 In jedem Testfall wird die Szene kurz beschrieben und die Qualität der Feature Matches, sowie ihre rekonstruierten Punkte bewertet.
 Bei der Bewertung wird zu einem auf die Beschaffenheit der Szene und des Objekts und zum anderem auf die Implementierung eingegangen.
-Es wird kurz auf mögliche Fehlerquellen bei den Modellen eingegangen.
-In XXX werden die Ergebnisse der Testfelle zusammengefasst.
+In XXX werden die Ergebnisse der Testfälle zusammengefasst.
 
 \section{Fall 1: Sessel}
 Im ersten Testfall wird versucht einen Sessel zu rekonstruieren.
@@ -22,6 +21,7 @@ Hier fällt auf, dass sich die Matches überwiegend auf den Seiten des Sessels b
 Auch der Text auf der Decke und dem Kissen, so wie das karierte Muster des anderen Kissens werden als Keypoints erkannt und gematcht. % todo: rewording.
 Des Weiteren sind viele Keypoints und Matches auf dem Teppich unten im Bild zu erkennen.
 Im Gegensatz dazu gibt es sehr wenige Matches auf dem Boden, der Heizung, der Wand, sowie auf der Decke und dem Sitzkissen des Sessels.
+Dies liegt daran, dass diese Texturen keine Kanten besitzen, die von den Feature Extractor als Feature erkannt werden können.
 Dementsprechend fehlen diese Flächen bei den rekonstruierten Punkten, wie in \cref{fig:chair-model} zu sehen ist.  
 Die generelle Form des Sessels und der Kissen ist in dem Modell gut zu erkennen.
 Von der Decke ist nur ein streifen zu sehen, wo Matches an dem Text existieren.  
@@ -55,25 +55,25 @@ Dies lässt eine ungenaue Skalierung des Translationsvektors vermuten.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/chair_first_pair.jpg}
-    \caption{}
+    \caption{Eins von zehn Bildpaaren zum Rekonstruieren des Sessels.}
     \label{fig:chair-first-pair}
 \end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/chair_first_pair_with_matches.jpg}
-    \caption{XX}
+    \caption{Bildpaar des Sessels mit Keypoints und Matches.}
     \label{fig:chair-first-pair-with-matches}
 \end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/chair_model.jpg}
-    \caption{XX}
+    \caption{Die rekonstruierten Bildpunkte des Sessels in Blender. Das Modell wurde um -119 Grad um die X gedreht, sowie um -4.8 Meter in Y und 2.7 Meter in Z Richtung verschoben.}
     \label{fig:chair-model}
 \end{figure}
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/chair_model_2.jpg}
-    \caption{XX}
+    \caption{Das Sessel Modell in einem anderem Blickwinkel}
     \label{fig:chair-model}
 \end{figure}
 
