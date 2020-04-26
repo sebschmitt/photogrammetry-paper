@@ -2,6 +2,11 @@
 Die rekonstruierten Punkte können exportiert und so in 3D-Animationsprogrammen wie Blender\footnote{https://blender.org} weiterverarbeitet werden.
 Dazu wird das Polygon File Format (PLY) verwendet, welches in \autoref{sec:ply-format} genauer erklärt wird.
 
+Die Schnittstelle zum Export ist in der abstrakten Klasse \emph{ModelExporter}, welche in \emph{include/modelexporter.hpp} spezifiziert ist, definiert.
+Ziel dieser Lösung ist es mehrere, austauschbare Exporter zu verwenden, wenngleich aktuell nur der PLY Exporter implementiert ist.
+Dieser ist in der Klasse \emph{PlyModelExporter} implementiert, welche von \emph{ModelExporter} erbt.
+Diese Klasse ist in \emph{include/model-exporters.hpp} spezifiziert und in \emph{src/ply-model-exporter.cpp} implementiert.
+
 
 \subsection{Polygon File Format}\label{sec:ply-format}
 Die Datei beginnt mit einem Header.
@@ -35,3 +40,6 @@ end_header
 \end{lstlisting}
 
 \subsection{Farben}
+Zur Bestimmung der Farben der Punkte gibt es die Klasse \emph{ColorPicker} welche in \emph{include/colors.hpp} spezifiziert und in \emph{src/colors.cpp} implementiert ist.
+Diese stelle eine öffentliche, statische Methode bereit welche als Parameter zwei Bilder, zwei Punkte sowie einen Radius annimmt.
+Zunächst wird pro Bild über den Radius um den übergebenen Punkt herum die Durchschnittsfarbe bestimmt, danach wird der Durchschnitt beider Farben gebildet.
