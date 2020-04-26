@@ -2,10 +2,36 @@
 Die rekonstruierten Punkte können exportiert und so in 3D-Animationsprogrammen wie Blender\footnote{https://blender.org} weiterverarbeitet werden.
 Dazu wird das Polygon File Format (PLY) verwendet, welches in \autoref{sec:ply-format} genauer erklärt wird.
 
+
 \subsection{Polygon File Format}\label{sec:ply-format}
 Die Datei beginnt mit einem Header.
 In diesem wird der Aufbau der Datei genauer spezifiziert.
+Der Header startet dabei immer mit der magischen Zahl \emph{ply}.
+In der zweiten Zeile wird mit \emph{format} das verwendete Format sowie die Version des Formats festgelegt.
+Verfügbare Formate sind entweder \emph{ascii}, \emph{binary\_little\_endian} sowie \emph{binary\_big\_endian}.
+Aktuell gibt es nur Version 1.0.
+In dieser Arbeit wird zur Ausgabe das \emph{ascii} Format verwendet.
+Auch wenn ein Binärformat gewählt wird, so besteht der Header immer aus ASCII-Zeichen.
+Mit dem \emph{element} Keyword beginnt die Beschreibung der verwendeten Elemente sowie deren Anzahl.
+Mit \emph{property} können verwendete Eigenschaften der Elemente sowie deren Datentypen festgelegt werden.
+In dieser Arbeit werden lediglich \emph{vertex} Elemente verwendet.
+Diese haben die Attribute \emph{x}, \emph{y} und \emph{z} sowie \emph{red}, \emph{green} und \emph{blue}.
+Eine Beispieldefinition ist in \autoref{lst:ply_vertex_element} zu sehen.
+Der Header wird mit dem Keyword \emph{end\_header} beendet.
+Darauf folgen alle Elemente in der im Header festgelegten Reihenfolge.
+Es ist also nicht nötig zusätzlich den Typ des Elements anzugeben.
+Um Beispielsweise einen roten Punkt mit den Koordinaten $\left(1, 2, 3\right)$ zu definieren, braucht man folgenden Eintrag:\\
+\emph{1.0	2.0	3.0	255	0	0}
 
-
+\begin{lstlisting}[numbers=left, breaklines=true, breakatwhitespace=false, label=lst:ply_vertex_element, caption=Beispiel PLY Header für 10 Vertex Elemente mit den Attributen Position und Farbe]
+element vertex 10
+property float x
+property float y
+property float z
+property uchar red
+property uchar green
+property uchar blue
+end_header
+\end{lstlisting}
 
 \subsection{Farben}
