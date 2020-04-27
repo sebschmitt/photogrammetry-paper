@@ -1,5 +1,61 @@
 % !TeX root = ../main.tex
 
 \chapter{Fazit}
+Die vier Testfälle in XXX haben gezeigt, dass in der Arbeit vorgestellte Pipeline nur unter bestimmten Umständen funktioniert.
+Diese Umstände, sowie mögliche Fehlerursachen, wurden in den Testfällen bereits erwähnt und werden nun näher erläutert.
+In XXX werden Ansätze zur Lösung der hier genannten Problemen genannt.
+
+Der wichtigste Umstand für eine gute Rekonstruktion ist, dass viele Keypoints auf dem zu rekonstruierenden Objekt liegen und viele Korrespondenzen im anderen Bild gefunden werden.
+Da Feature Detektoren Kanten und Ecken als Features erkennen, eignen sich Objekte mit einer kantigen Oberfläche gut für die Rekonstruktion.
+Beispiele dafür sind der Sessel in XXX und die Box in XXX.
+Andere Oberflächen, die glatt sind oder kein besonderes Muster besitzen, sind entsprechend nicht geeignet.
+Das ist gut beim Sitzkissen des Sessels, beim Auto und beim Hund zu erkennen. 
+
+Ein Weiteres Problem ist, dass die Punkte nicht richtig rekonstruiert werden.
+In XXX(Auto) ist zu sehen, dass Punkte, die weit hinten im Hintergrund liegen, ungefähr in der gleichen Ebene wie andere Punkte liegen, die weiter vorne sind.  
+Dahingegen ist in XXX(Hund) gut zu erkennen, wie die Punkte des Teppichs verschiedene Ebenen satt einer bilden.
+Das gleiche Problem tritt auch bei den vergleichsweisen guten Testfällen auf, wie in XXX (Sessel) und XXX(Box) zu sehen ist.
+
+Das Problem lässt eine schlechte Skalierung vermuten, die durch mehrere Ursachen entstehen kann. 
+Eine mögliche Ursache sind falsche Matches, also ein korrespondierende Bildpunkte, die nicht zusammengehören.
+Durch falsche Matches entstehen zum einen Fehler bei beim Bestimmen der Position der Kamera in einem Bildpaar.
+Dies kann sich in der Projektionsmatrix bemerkbar machen, wodurch ein geringer Fehler bei allen Rekonstruierten Punkten entstehen kann.
+Des Weiteren wird die Skalierung direkt negativ beeinflusst, wenn falsche Matches zum Bestimmen der Skalierung verwendet werden. 
+Der Fehler, der hierbei entsteht, ist um so größer, um so weniger Punkte zum Bestimmen der Skalierung genutzt werden.
+So werden beispielsweise bei der Rekonstruktion des Autos nur zwei Punkte zum Skalieren benutzt (siehe XXX(auto tabelle)).
+Falsche Matches sind in diesem Projekt ein kleineres Problem, da die Matches sofort gefiltert werden, so dass sie die Bildpunkte in der gleichen Epipolarebene liegen.
+Des Weiteren werden beim Rekonstruieren alle Ausreißer vermerkt und später entfernt.
+Daher sind bei den in XXX gezeigten Bildpaaren, die ihre Feature Matches zeigen, keine falschen Matches zu erkennen.
+Im ersten Testfall ist es schwer die Matches auf dem Teppich zu erkennen (in XXX ist es noch extremer), und man kann vermuten, dass hier einige falsch sind.
+Jedoch ist im vierten Testfall ein ähnliches Ergebnis wie im ersten zu finden und es sind keine falschen Matches zu erkennen.
+Somit können falsche Matches ein Ursache für die schlechte Skalierung sein, aber auf Grund der Anzahl der verwendeten Punkte im ersten und vierten Testfall ist der verursachte Fehler nur sehr klein.
+Eine größere Ursache sind stattdessen Punkte, die 
+
+
+
+
+
+
+
+
+% - falsche Matches
+%     - Fehler in der Skalierung
+%     - bei wenigen Punkten umso auffälliger
+%     - bsp, Teppich, wo viele erkannt werden
+% - ungenaue rekonstruierte Punkte
+%     - Features, die im Hintergrund liegen werden gff.\ schlecht rekonstruiert.
+%     - einige Bildpunkte / Matches, die in mehreren Bildern zu finden sind, werden mehrmals Rekonstruiert, ohne dass die Punkte angeglichen / korrigiert werden
+%     - Matches aus vorherigen Bildpaaren werden nicht korrigiert -> Fehler
+
+
+
+
+
+
+
+Daher eignen sich nur Objekte mit 
+Feature Dectoren 
+
+
 
 \chapter{Ausblick}
