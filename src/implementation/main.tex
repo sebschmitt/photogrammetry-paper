@@ -2,10 +2,18 @@
 \chapter{Umsetzung}\label{sec:implementation}
 Im folgenden wird der Aufbau des Projektes sowie verwendete Bibliotheken erläutert.
 Zusätzlich wird auf die Implementierung der einzelnen Schritte der SfM Pipeline eingegangen.
+Die einzelnen Schritte der Pipline sind teilweise in unterschiedlichen Klassen implementiert.
+Die \autoref{fig:pipeline-classes} gibt einen Überblick über diese sowie deren Beziehungen zueinander.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{src/img/classes.jpg}
+    \caption{Klassendiagramm alle Klassen welche Pipeline Funktionen implementieren}
+    \label{fig:pipeline-classes}
+\end{figure}
 
 \input{src/implementation/structure.tex}
 \input{src/implementation/cli-args.tex}
-\input{src/implementation/pipeline.tex}
 \input{src/implementation/calibration.tex}
 \input{src/implementation/feature-identification.tex}
 \input{src/implementation/feature-matching.tex}
