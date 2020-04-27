@@ -29,7 +29,10 @@ Daher sind bei den in XXX gezeigten Bildpaaren, die ihre Feature Matches zeigen,
 Im ersten Testfall ist es schwer die Matches auf dem Teppich zu erkennen (in XXX ist es noch extremer), und man kann vermuten, dass hier einige falsch sind.
 Jedoch ist im vierten Testfall ein ähnliches Ergebnis wie im ersten zu finden und es sind keine falschen Matches zu erkennen.
 Somit können falsche Matches ein Ursache für die schlechte Skalierung sein, aber auf Grund der Anzahl der verwendeten Punkte im ersten und vierten Testfall ist der verursachte Fehler nur sehr klein.
-Eine größere Ursache sind stattdessen Punkte, die 
+Fehler bei rekonstruierten Punkten sind eine weitere Ursache, die einen stärkeren Einfluss auf die Skalierung hat. 
+Im zweiten Testfall ist zu erkennen, dass die Keypoints auf den Bäumen ungefähr gleich weit von der Kamera entfernt rekonstruiert werden, wie die Keypoints auf der Wand.
+Diese Fehler entsteht dadurch, dass die Parallaxe bei zwei Bildern kleiner wird, desto weiter das Objekt entfernt ist.
+Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, die bei allen Punkten auftritt, aber bei entfernten Objekten stärker wird.
 
 
 
