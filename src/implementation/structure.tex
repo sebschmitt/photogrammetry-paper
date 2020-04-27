@@ -1,0 +1,23 @@
+\section{Projektstruktur}\ohead{Sebastian Schmitt}
+Die Applikation wird in C++ entwickelt.
+Auch wenn Performance kein Ziel ist, wurde C++ gewählt um eine höhere Performance zu erreichen.
+Einzige Abhängigkeit ist die offene Bibliothek OpenCV, siehe dazu \ref{sec:opencv}.
+Zur Buildsteuerung wird das quelloffene Tool CMake\footnote{https://cmake.org/} verwendet.
+
+Das Projekt ist folgendermaßen strukturiert:
+
+\dirtree{%
+.1 yapgt.
+.2 include \ldots{} \begin{minipage}[t]{12cm}
+Header-Dateien
+\end{minipage}.
+.2 resources \ldots{} \begin{minipage}[t]{12cm}
+Bilder zum Testen von Kalibrierung und Feature-Matching
+\end{minipage}.
+.2 src \ldots{} \begin{minipage}[t]{12cm}
+Implementierung
+\end{minipage}.
+.2 CMakeLists.txt \ldots{} \begin{minipage}[t]{12cm}
+CMake Konfiguration
+\end{minipage}.
+}

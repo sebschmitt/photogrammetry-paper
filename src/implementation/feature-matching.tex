@@ -1,0 +1,22 @@
+\section{Feature Matching}\ohead{Sebastian Schmitt}
+Zum Matchen der im vorherigen Schritt identifizierten Features wird ein Bruteforce Matcher verwendet.
+Die Entscheidung für den Bruteforce Matcher viel, da er einfach zu verwenden und dabei gründlich ist.
+Die geringere Performance ist für diese Arbeit nicht wichtig.
+
+Das Feature Matching ist ebenfalls in der Methode \emph{generateSequence} der Klasse \emph{SequenceMatcher} implementiert.
+Nachdem für alle Bilder Features identifiziert und Deskriptoren gebildet wurden, werden letztere paarweise abgeglichen.
+Dazu werden Paare gebildet welche immer aus einem Bild und dem direkten Nachfolger bestehen.
+So entsteht bspw. aus Bild 1 und Bild 2, aus Bild 2 und Bild 3 sowie aus Bild 3 und Bild 4 jeweils ein Paar.
+Zum Matchen wird OpenCVs Bruteforce Matcher \emph{cv::BFMatcher}\cite{opencv_doc_bfmatcher} verwendet.
+Dieser wird mit dem Parameter \emph{cv::NORM\_L2} initisalisiert, um \emph{L2} als Normierungstyp zu verwenden.
+\emph{L1} und \emph{L2} sind dabei die empfohlenen Normierungstypen für SIFT \cite{opencv_doc_bfmatcher_create}.
+Da bei Tests mit \emph{L2} bessere Matches gefunden werden konnten als mit \emph{L1}, wird \emph{L2} verwendet.
+Zusätzlich wird die Option \emph{crossCheck} des Bruteforce Matcher aktiviert.
+Dadurch wird verhindert, dass ein Keypoint mit mehreren Keypoints abgeglichen wird \cite{opencv_doc_bfmatcher_create}.
+Für jedes Bildpaar wird nun die Funktion \emph{match}\cite{opencv_doc_match} des Bruteforce Matchers aufgerufen.
+Übergeben werden jeweils die Feature-Deskriptoren sowie ein Pointer zu einem \emph{std::vector<cv::DMatch>} in welchem die gefundenen Matches gespeichert werden.
+Danach wird für jedes Paar basierend auf den Bildpunkten eine Fundamental Matrix gebildet.
+Dazu wird OpenCVs \emph{cv::findFundamentalMatrix}\cite{opencv_doc_find_fundamental_mat} verwendet.
+Danach werden solche Keypoints herausgefiltert, welche nicht Teil der Maske sind.
+Falls vom Nutzer entsprechend so eingestellt wird zum Schluss für jedes Paar ein Bild gespeichert in welchem die gefundenen Matches visualisert sind.
+Ein solches Bild ist in \autoref{fig:example-match-output} zu sehen.
