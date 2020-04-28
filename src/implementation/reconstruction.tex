@@ -27,7 +27,7 @@ Für jedes Bildpaar wird die Rekonstruktion in den folgenden 5 Schritten durchge
 Im ersten Schritt wird für das aktuelle Bildpaar die Rotation und Translation der rechten Kamera im Bezug auf die Linke bestimmt.
 Wie in \cref{sec:essential-mat} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
 OpenCV bietet dafür die Funktionen \emph{cv::findEssentialMat}~\cite{opencv_doc_essential_matrix} und \emph{cv::recoverPose}~\cite{opencv_doc_recover_pose} an.
-Zunächst werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix and \emph{cv::findEssentialMat} übergeben.
+Zunächst werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix an \emph{cv::findEssentialMat} übergeben.
 Mit den weiteren drei Argumenten wird der angewendete Algorithmus gewählt und angepasst.
 Es kann zwischen \emph{RANSAC} (random sampling with consensus) und \emph{LMeDS} (least median of squares) gewählt werden.
 Hier wird der RANSAC Algorithmus gewählt, da laut~\cite[Kapitel 18, 664]{kaehler_2016} RANSAC resistenter gegen Ausreißer und Rauschen im Bild ist als LMeDS. % TODO: ggf noch ein Satz zu warum das gut ist, also dass wir Ausreißer in den Matches und evt. schlete Bilder erwarten
