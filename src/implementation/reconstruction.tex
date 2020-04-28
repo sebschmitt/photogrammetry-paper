@@ -25,7 +25,7 @@ Für jedes Bildpaar wird die Rekonstruktion in den folgenden 5 Schritten durchge
 \end{enumerate}
 
 Im ersten Schritt wird für das aktuelle Bildpaar die Rotation und Translation der rechten Kamera im Bezug auf die Linke bestimmt.
-Wie in \cref{sec:essential-matrix} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
+Wie in \cref{sec:essential-mat} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
 OpenCV bietet dafür die Funktionen \emph{findFundamentalMat}~\cite{opencv_doc_essential_matrix} und \emph{recoverPose}~\cite{opencv_doc_recover_pose} an.
 In Zeile XXX des Listings XXX wird findFundamentalMat aufgerufen. 
 Hierbei werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix übergeben.
