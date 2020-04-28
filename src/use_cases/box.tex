@@ -1,16 +1,16 @@
 \section{Fall 4: Box}
 \label{sec:testcase-box}\ohead{Sebastian Schmitt}
-Im vierten Testfall wird versucht eine Box anhand von fpnf Bildern zu rekonstruieren.
+Im vierten Testfall wird versucht eine Box anhand von fünf Bildern zu rekonstruieren.
 Diese ist in \autoref{fig:box-image} zu sehen.
 
 Die \autoref{tab:box-results} zeigt die Ergebnisse der Rekonstruktion.
 Es fällt auf, dass nur vergleichsweise sehr wenige Matches gefunden werden.
 Betracht man jedoch in \autoref{fig:box-first-pair-with-matches} wo Keypoints und Matches liegen, erkennt man, dass die meisten Matches durchaus direkt an der Box bzw. an dem Kissen auf der Box gefunden wurden.
 Besonders das Kissen und die Vorderseite der Box kann man in \autoref{fig:box-model} gut erkennen.
+Diese guten Matches kommen zustande, da es in den Bildern klare Flächen mit identifizierbaren Kanten gibt.
 Dass auf der Seite der Box keine Matches gefunden wurden, ist dadurch zu erklären, dass jeweils nur ein Bild existiert auf welchem eine Boxseite zu erkennen ist.
-Betrachtet man \autoref{tab:box-results} sowie \autoref{fig:box-model-2} , so fällt auf, dass die Skalierung beim zweiten Bildpaar stark von den anderen abweicht.
-Dies spiegelt sich in den 3D Punkten wieder:
-Man erkennt etwas oberhalb deutlich weitere Punkte zu Kissen bzw. Boxdeckel, welche eigentlich tiefer liegen müssten.
+Betrachtet man \autoref{fig:box-model-2}, so erkennt man etwas oberhalb deutlich weitere Punkte zu Kissen bzw. Boxdeckel, welche eigentlich tiefer liegen müssten.
+Dies lässt ähnlich wie in \autoref{sec:textcase-chair} eine ungenaue Skalierung des Translationsvektors vermuten.
 
 \begin{figure}
     \includegraphics[width=\textwidth]{src/img/box.jpg}
