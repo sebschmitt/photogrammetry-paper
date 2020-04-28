@@ -4,7 +4,7 @@
 
 \section{Was ist Photogrammetrie?}\label{sec:what-is-photogrammetry}
 Mit Photogrammetrie bezeichnet man Techniken, mit denen man Informationen wie Position, Orientierung, Form und Größe eines Objekts aus Bildern rekonstruieren kann.
-Dabei unterscheidet man ob es sich bei den Bildern um photochemische (konventionelle Photographie), photoelektrische (digitale Photographie) oder um Laserscanner-Aufnahmen, dabei handelt es sich um Bilder welche zusätzlich Entfernungsinformationen zu jedem Bildelement enthalten, handelt.
+Dabei unterscheidet man ob es sich bei den Bildern um photochemische (konventionelle Photographie), photoelektrische (digitale Photographie) oder um Laserscanner-Aufnahmen\footnote{Bilder welche zusätzlich Entfernungsinformationen zu jedem Bildelement enthalten} handelt.
 Je nach Art der Weiterverarbeitung sowie Aufnahme der Bilder wird der Begriff der Photogrammetrie weiter differenziert.
 Bei Weiterverarbeitung von photochemischen Bildern mittels optisch-mechanischer Geräte spricht man von \textbf{analoger Photogrammetrie}.
 Bei Weiterverarbeitung von photochemischen Bildern mittels Computer spricht man von \textbf{analytischer Photogrammetrie}.
@@ -36,7 +36,7 @@ Dieses Vorgehen bietet sich also vor allem für Mengen von Bildern an, welche si
     \label{fig:theory-sfm-images}
 \end{figure}
 
-Dieses Vorgehen macht sich die Parallaxe zu nutze.~\cite[stockmann_2001]
+Dieses Vorgehen macht sich die Parallaxe zu nutze\cite[stockmann_2001].
 Mit Parallaxe bezeichnet man die scheinbare Änderung der Position eines Objektes, wenn der Beobachter seine eigene Position ändert.
 Definiert ist diese als der Winkel zwischen zwei Geraden, welche von verschiedenen Standorten auf denselben Punkt (ein Objekt) gerichtet sind (Siehe dazu \autoref{fig:theory-sfm-parallax}) \cite{stockmann_2001}.
 \footnote{Als anschauliches Beispiel kann man bei ausgestrecktem Arm einen Daumen heben und diesen abwechselnd mit dem linken und dem rechten Auge betrachten.}
@@ -50,17 +50,16 @@ Definiert ist diese als der Winkel zwischen zwei Geraden, welche von verschieden
 
 Um die Kameraposition sowie die Geometrie der Szene simultan zu rekonstruieren werden automatisch Feature in den Bildern identifiziert.
 Diese Feature werden dann über mehrere Bilder verfolgt, was eine erste Annahme zu den Kamerapositionen sowie den Objektkoordinaten erlaubt.
-Diese können iterativ mittels nicht-linearer least-squares minimisation verfeinert werden. ~\cite[Kapitel 1.3]{westoby_2012}
+Sie können iterativ mittels nicht-linearer least-squares minimisation verfeinert werden. ~\cite[Kapitel 1.3]{westoby_2012}
 
 \subsection{Lochkamera-Modell}\label{sec:pinhole-camera-model}
 Das Lochkamera-Modell ist das einfachste Kameramodell und wird im Folgenden dazu verwendet relevante Begriffe und die Geometrie zu erklären.
-Bei diesem Modell wir die zentrale Projektion von Punkten im Raum auf eine Ebene betrachtet.
+Bei diesem Modell wird die zentrale Projektion von Punkten im Raum auf eine Ebene betrachtet.
 Das Zentrum der Projektion definiert den Ursprungs eines euklidischen Koordinatensystems.
-Der Ursprung wird auch \emph{Kamerazentrum} genannt und als Punkt $C$ referenziert.
+Dieser wird auch \emph{Kamerazentrum} genannt und als Punkt $C$ referenziert.
 Die Bildebene liegt parallel zu der XY-Ebene auf der Z-Achse.
 Der Abstand zum Ursprung wird durch die Brennweite $f$ der Kamera definiert.
-Der Schnittpunkt $p$ der Bildebene und der Z-Achse wird als Hauptpunkt (engl. principal point) bezeichnet.
-Der Hauptpunkt definiert innerhalb der Bildebene den Ursprung eines zweidimensionalen Koordinatensystems.
+Der Schnittpunkt $p$ der Bildebene und der Z-Achse wird als Hauptpunkt (engl. principal point) bezeichnet und definiert innerhalb der Bildebene den Ursprung eines zweidimensionalen Koordinatensystems.
 Häufig ist es aber der Fall, dass der Hauptpunkt und der Ursprung voneinander abweichen.
 Daher wird der Ursprung auch mit den Koordinaten $(p_x, p_y)^T$ angegeben.
 Mit diesen Informationen kann nach~\cite[Gleichung 6.2]{hartley_2003} die Abbildung eines Punkts im Raum auf die Bildebene in homogenen Koordinaten durch eine Matrixmultiplikation ausgedrückt werden:
@@ -94,7 +93,7 @@ Mit der Definition der \emph{Kamera-Kalibrierungsmatrix} (auch \emph{Kalibrierun
       &   & 1   & 0
     \end{bmatrix}
 \]
-kann die~\ref{eqn:theory-projection} auch zu $x=K[I | 0] X$ vereinfacht werden~\cite[vgl. Gleichung 6.5]{hartley_2003}. 
+kann die~\autoref{eqn:theory-projection} auch zu $x=K[I | 0] X$ vereinfacht werden~\cite[vgl. Gleichung 6.5]{hartley_2003}. 
 
 
 \begin{figure}
@@ -158,7 +157,7 @@ Hier muss beachtet werden, dass $t$ ein Einheitsvektor und nur maßstabsgetreu i
 
 \section{Kamerakalibrierung}\label{sec:theory-calibration}
 Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parametern der Kameramatrix und den Verzerrungsparametern. 
-Die Kameramatrix wird in \cref{sec:pinhole-camera-model} erklärt.
+In \cref{sec:pinhole-camera-model} wird die Kameramatrix erklärt.
 Die Verzerrungsparameter werden genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
 Hierbei wird zwischen zwei Arten der Verzerrung unterschieden: radiale und tangentiale Verzerrung.
 Radiale Verzerrung entsteht durch die runde Form der Linse, wodurch die Pixel am Bildrand verzerrt werden.

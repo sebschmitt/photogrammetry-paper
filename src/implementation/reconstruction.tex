@@ -3,7 +3,7 @@
 In diesem Abschnitt werden die einzeln Schritte zum Rekonstruieren der Korrespondenzen erklärt, die im vorherigen Prozess gebildet worden sind. 
 Für die Rekonstruktion wird die Klasse \emph{SceneReconstructor} in der Datei \emph{reconstruction.hpp} definiert und in \emph{reconstruction.cpp} implementiert (siehe XXX und XXX). 
 Die Klasse besitzt einen Konstruktor, welche eine Instanz der Calibration Klasse als Argument benötigt. 
-Mit der Instanz wird die private Member-Variable \emph{calbiration} instanziiert, so dass sie später zum Berechnen der Projektionsmatrix verwendet werden kann.
+Mit der Instanz wird die private Member-Variable \emph{calbiration} instanziiert, sodass sie später zum Berechnen der Projektionsmatrix verwendet werden kann.
 Des Weiteren wird die öffentliche Methode \emph{reconstructScenes} definiert.
 Mit dem Iterator werden in der Methode die korrespondierenden Bildpunkte rekonstruiert.
 Dabei wird darauf geachtet, dass die rekonstruierten Punkte der einzelnen Paare später auch zusammen passen.
@@ -25,7 +25,7 @@ Für jedes Bildpaar wird die Rekonstruktion in den folgenden 5 Schritten durchge
 \end{enumerate}
 
 Im ersten Schritt wird für das aktuelle Bildpaar die Rotation und Translation der rechten Kamera im Bezug auf die Linke bestimmt.
-Wie in \cref{sec:essential-matrix} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
+Wie in \cref{sec:essential-mat} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
 OpenCV bietet dafür die Funktionen \emph{findFundamentalMat}~\cite{opencv_doc_essential_matrix} und \emph{recoverPose}~\cite{opencv_doc_recover_pose} an.
 In Zeile XXX des Listings XXX wird findFundamentalMat aufgerufen. 
 Hierbei werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix übergeben.
