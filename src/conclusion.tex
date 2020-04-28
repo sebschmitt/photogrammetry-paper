@@ -1,6 +1,8 @@
 % !TeX root = ../main.tex
 
 \chapter{Fazit}
+\label{sec:conclusion}
+
 Die vier Testfälle in XXX haben gezeigt, dass in der Arbeit vorgestellte Pipeline nur unter bestimmten Umständen funktioniert.
 Diese Umstände, sowie mögliche Fehlerursachen, wurden in den Testfällen bereits erwähnt und werden nun näher erläutert.
 In XXX werden Ansätze zur Lösung der hier genannten Problemen genannt.
@@ -36,5 +38,35 @@ Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, die bei allen Punkten 
 Dies beeinflusst die Distanzen zwischen den Punktpaaren, wodurch die Skalierung ungenau wird.
 Zwar wird die Skalierung als der Durchschnitt aller Verhältnisse der Distanzen berechnet, jedoch wird der Fehler nicht weiter minimiert.
 Da einzelne Bildpaare mit Hilfe der Punkte aus dem vorherigen Bildpaar rekonstruiert werden, nimmt der Fehler mit jedem weiteren Bildpaar zu. 
+% Hunde problem nochmal erläutern
+% irgendein Punkt wollte ich nochmal ansprechen, aber ich habs vergessen...
 
 \chapter{Ausblick}
+\label{sec:outlook}
+
+In diesem Abschnitt werden mögliche Verbesserungen der Probleme, die in \cref{sec:conclusion} erläutert werden, sowie weiterführende Entwicklungsmöglichkeiten des Projekts vorgestellt.
+
+Für eine bessere Rekonstruktion der Bilder müssen die Fehler der rekonstruierten Bilder minimiert werden.
+Dazu sollten zunächst alle rekonstruierten über alle Bildpaare hinweg verfolgt werden, anstatt sie für jedes Bildpaar einzeln zu betrachten.
+Die Punkte, welche in mehreren Bildpaaren zu finden sind, können gemittelt werden, so dass sich der Fehler für diese Punkte verringert.
+Um die Anzahl der Punkte zu erhöhen, die in mehreren Bildpaaren zu finden sind, sollten die Feature Matches in allen möglichen Bildpaaren gesucht werden.
+Es werden dann nur die Bildpaare wie in XXX beschrieben rekonstruiert.
+Jedoch ist dies mit erheblichen Performanz-einbußen verbunden, da bei $N$ Bildern nun $(N-1)^2$ Bilder gematcht werden müssen. % Anderes wort für gematch 
+%TODO: wir haben das versucht, aber verkackt (noch reinschreiben und rewording)
+
+Des Weiteren sollte ein Prozess zwischen Reconstruction und Export hinzugefügt werden, der Bundle Adjustment durchführt. 
+Bundle Adjustment ist eine Maximum-Likelihood-Schätzung, die den Reprojektionsfehler der rekonstruierten Punkte~\cite{hartley_2003}.
+% Todo: Reprojektion und formel erklären
+Nach~\cite{hartley_2003} sollte Bundel Adjustment generell als letzter Schritt bei jedem Rekonstruktionsalgorithmus angewendet werden.
+Dies ist ein non-linear least squares Problem. % TODO: ggf entfernen.
+Für dieses Optimierungsproblem können verschiedene Bibliotheken verwendet werden, wie z.B den \emph{Cerces Solver}~\cite{cerces-solver}.
+ 
+ Ein Weiteres Problem stellen die wenigen Matches auf dem eigentliche Objekt da.
+ Es müssen mehr Matches generiert werden, so dass das Objekte mit einfachen Oberflächen besser rekonstruiert werden können.
+ In~\cite{lhuillier_2002} wird ein Algorithmus vorgestellt, welcher basierend auf existierenden Matches weitere Matches generiert.
+ Dazu werden die benachbarten Pixel der Keypoints an Hand der best-first Strategie propagiert.
+ Weitere Algorithmen werden in~\cite{ahmadabadian_2013} beschrieben und miteinander verglichen.
+ Einer dieser Algorithmen sollte schließlich implementiert werden.
+ 
+
+
