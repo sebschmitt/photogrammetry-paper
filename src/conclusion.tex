@@ -1,5 +1,80 @@
 % !TeX root = ../main.tex
+\chapter{Fazit}
+\label{sec:conclusion}
 
-\chapter{Fazit}\label{sec:conclusion}
+Die vier Testfälle in \cref{sec:testcases} haben gezeigt, dass die vorgestellte Pipeline nur unter bestimmten Umständen funktioniert.
+Jedoch sind die Rekonstruktionen auch unter diesen Umständen nicht korrekt und müssen nachbearbeitet werden.
+Die möglichen Probleme und Fehlerursachen werden in diesem Abschnitt näher erläutert.
+In \cref{sec:outlook}  werden Ansätze zur Lösung der hier genannten Problemen genannt.
 
-\chapter{Ausblick}\label{sec:outlook}
+Ein wichtiger Umstand für eine gute Rekonstruktion mit der Pipeline ist, dass viele Keypoints auf dem zu rekonstruierenden Objekt liegen und viele Korrespondenzen im anderen Bild gefunden werden.
+
+Ein Problem der Pipeline ist, dass nicht genügen Punkte rekonstruiert werden.
+Dadurch ist es nicht möglich das Objekt zu erkennen, wenn die Rekonstruktion in Blender betrachtet wird.
+Der Grund dafür ist, dass die Erkennung von Features in Bilder auf Ecken und Kanten basiert.
+Somit werden viele Features auf kantigen Oberflächen gefunden wie sie beim Sessel in \cref{fig:chair-first-pair-with-matches} oder bei der Box in \cref{fig:box-first-pair-with-matches} zu sehen sind.
+Bei andere Oberflächen, die glatt sind oder kein besonderes Muster besitzen, können auf ihnen keine Features gefunden werden.
+Das ist gut beim Sitzkissen des Sessels, beim Auto und beim Hund zu erkennen. 
+
+Das weitaus größere Problem ist, dass die Bildpunkte nicht richtig rekonstruiert werden.
+In \cref{fig:car-model-2} ist zu sehen, dass die rekonstruierten Punkte der Bäume im Hintergrund ungefähr in der gleichen Ebene wie die Punkte der Wand liegen.  
+Dahingegen ist in \cref{fig:dog-model-2} gut zu erkennen, wie die Punkte des Teppichs keine gemeinsame Ebene bilden.
+Das gleiche Problem tritt auch bei den vergleichsweisen guten Testfällen auf, wie in \cref{fig:chair-model-2} und \cref{fig:box-model-2} zu sehen ist.
+
+Das Problem lässt eine schlechte Skalierung vermuten, die durch mehrere Ursachen entstehen kann. 
+Eine mögliche Ursache sind falsche Matches, also korrespondierende Bildpunkte, die nicht zusammengehören.
+Durch falsche Matches entstehen zum einen Fehler beim Bestimmen der Position der Kamera in einem Bildpaar.
+Dies kann sich in der Projektionsmatrix bemerkbar machen, wodurch ein geringer Fehler bei allen Rekonstruierten Punkten entstehen kann.
+Des Weiteren wird die Skalierung direkt negativ beeinflusst, wenn falsche Matches zum Bestimmen der Skalierung verwendet werden. 
+Der dabei entstehende Fehler wird größer, wenn weniger Punkte zum Bestimmen der Skalierung genutzt werden.
+Beispielsweise wird bei der Rekonstruktion des Autos nur zwei Punkte zum Skalieren benutzt (siehe \cref{tab:car-results}).
+Falsche Matches sind in diesem Projekt jedoch ein kleineres Problem, da die Matches stark gefiltert werden.
+Die gefundenen Feature Matches werden mit Hilfe der Fundamentalmatrix gefiltert, so dass die korrespondierenden Bildpunkte in der gleichen Epipolarebene liegen.
+Des Weiteren werden beim Rekonstruieren alle Ausreißer vermerkt und später entfernt.
+Daher sind bei den in \cref{fig:chair-first-pair-with-matches,fig:car-second-pair-with-matches,fig:dog-first-pair-with-matches,fig:box-first-pair-with-matches} gezeigten Bildpaaren, die ihre Feature Matches zeigen, keine falschen Matches zu erkennen.
+Im ersten Testfall ist es jedoch schwer die Matches auf dem Teppich zu erkennen (in \cref{fig:dog-first-pair-with-matches} ist es noch extremer) und man kann vermuten, dass hier einige falsch sind.
+Jedoch ist im vierten Testfall ein ähnliches Ergebnis wie im ersten zu finden und es sind keine falschen Matches zu erkennen.
+Somit können falsche Matches zwar ein Ursache für die schlechte Skalierung sein, aber auf Grund der Anzahl der verwendeten Punkte im ersten und vierten Testfall ist der verursachte Fehler nur sehr klein.
+
+Der Fehler, der beim Rekonstruieren der Punkte entsteht, ist eine weitere Ursache, die einen stärkeren Einfluss auf die Skalierung hat. 
+Im zweiten Testfall ist zu erkennen, dass die Keypoints auf den Bäumen ungefähr gleich weit von der Kamera entfernt rekonstruiert werden, wie die Keypoints auf der Wand.
+Dieser Fehler entsteht dadurch, dass die Parallaxe bei zwei Bildern kleiner wird, desto weiter das Objekt entfernt ist (siehe \cref{sec:sfm}). % TODO: muss belegt werden
+Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, welche bei allen Punkten auftreten, aber bei entfernten Objekten stärker werden. % TODO: muss belegt werden
+Dies beeinflusst die Distanzen zwischen den Punktpaaren, wodurch die Skalierung ungenau wird.
+Zwar wird die Skalierung als Durchschnitt aller Verhältnisse der Distanzen berechnet, jedoch wird der Fehler nicht weiter minimiert.
+Da einzelne Bildpaare mit Hilfe der Punkte aus dem vorherigen Bildpaar rekonstruiert werden, nimmt der Fehler mit jedem weiteren Bildpaar zu. 
+% Hunde problem nochmal erläutern
+
+\chapter{Ausblick}
+\label{sec:outlook}
+
+In diesem Abschnitt werden mögliche Verbesserungen der Probleme, die in \cref{sec:conclusion} erläutert werden, sowie weiterführende Entwicklungsmöglichkeiten des Projekts vorgestellt.
+
+Für eine bessere Rekonstruktion der Bilder müssen die Fehler der rekonstruierten Bilder minimiert werden.
+Dazu sollten zunächst alle rekonstruierten Punkte über alle Bildpaare hinweg verfolgt werden, anstatt sie für jedes Bildpaar einzeln zu betrachten.
+Die Punkte, welche in mehreren Bildpaaren zu finden sind, können gemittelt werden, so dass sich der Fehler für diese Punkte verringert.
+Dazu sollte auch die Anzahl der Punkte, die in mehreren Bildpaaren zu finden sind, erhöht werden.
+Dies kann erreicht werden, in dem die Feature Matches in allen möglichen Kombinationen der Bildpaaren gesucht werden.
+Es werden aber weiterhin nur die Bildpaare wie in \cref{sec:concept} beschrieben rekonstruiert.
+Diese Änderung ist jedoch mit erheblichen Performanz-Einbußen verbunden, da bei $N$ Bildern nun Feature Matches in $(N-1)^2$ Bildern gesucht werden müssen. 
+%TODO: wir haben das versucht, aber verkackt (noch reinschreiben und rewording)
+
+Des Weiteren sollte ein Prozess zwischen Reconstruction und Export hinzugefügt werden, der Bundle Adjustment durchführt. 
+Bundle Adjustment ist eine Maximum-Likelihood-Schätzung, die den Reprojektionsfehler der rekonstruierten Punkte~\cite[Kapitel 18.1]{hartley_2003} minimiert.
+Die Gleichung $x^i_j = P^iX_j$ wird auf Grund des Rauschen in den Bildern nicht exakt erfüllt.
+Dabei gibt $x^i_j$ den j-ten Bildpunkt in der i-ten Kamera, $P^i$ die Projektionsmatrix der i-ten Kamera und $X_j$ den j-ten Weltpunkt an.
+Unter der Annahme von gaußschem Rauschen in den Bildern, sollen die Projektionsmatrix $\hat{P}^i$ und der Weltpunkt $\hat{X}_j$ geschätzt werden.
+Dabei soll auch die geometrische Distanz zwischen dem Bildpunkt $\hat{x}^i_j$ und seiner Reprojektion $\hat{x}^i_j = \hat{P}^i\hat{X}_j$ minimiert werden~\cite[Kapitel 18.1]{hartley_2003}.
+Also gilt \cite[Equation 18.1]{hartley_2003}:
+\[\min_{\hat{P}^i,\hat{X}_j}\sum_{ij}d(\hat{P}^i\hat{X}_j,x^i_j)^2\]
+% Todo: Reprojektion und formel erklären
+Nach~\cite[Kapitel 18.1]{hartley_2003} sollte Bundel Adjustment generell als letzter Schritt bei jedem Rekonstruktionsalgorithmus angewendet werden.
+Dies ist ein non-linear least squares Problem. % TODO: ggf entfernen.
+Für dieses Optimierungsproblem können verschiedene Bibliotheken verwendet werden, wie z.B der \emph{Ceres Solver}~\cite{ceres-solver}.
+ 
+ Ein Weiteres Problem stellen die wenigen Matches auf dem eigentliche Objekt da.
+ Es müssen mehr Matches generiert werden, so dass das Objekte mit glatten Oberflächen besser rekonstruiert werden können.
+ In~\cite{lhuillier_2002} wird ein Algorithmus vorgestellt, welcher basierend auf existierenden Matches weitere Matches generiert.
+ Dazu werden die benachbarten Pixel der Keypoints an Hand der best-first Strategie propagiert.
+ Weitere Algorithmen werden in~\cite{ahmadabadian_2013} beschrieben und miteinander verglichen.
+ Einer dieser Algorithmen sollte schließlich als weiterer Prozess nach dem Bundle Adjustment implementiert werden.
