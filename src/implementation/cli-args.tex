@@ -1,0 +1,79 @@
+\section{Kommandozeilenargumente}\ohead{Sebastian Schmitt}
+Die einzelnen Schritte der Pipeline werden mittels Kommandozeilenargumente konfiguriert.
+Zum Parsen der übergebenen Argumente wurde ein Argumentparser geschrieben.
+Dieser akzeptiert Argumente in der Form \emph{-Argumentname}, wobei es egal ist wie viele Bindestriche vor dem Argumentnamen stehen.
+Da nach jedem Bindestrich ein neues Argument beginnt, ist es nicht möglich Bindestriche innerhalb von Argumentnamen zu verwenden.
+Dieser ist in \emph{include/argparser.hpp} spezifiziert und in \emph{src/argparser.c} implementiert.
+Er beinhaltet den Namespace \emph{argparser} sowie zwei Klassen:
+\begin{itemize}
+\item \textbf{Argument}, repräsentiert ein Arguments (Name, Beschreibung, ob es übergeben wurde, welcher Wert übergeben wurde, ob es übergeben werden muss)
+\item \textbf{ArgumentParser}, kennt alle Argumente, überprüft die übergebenen Argumente und legt fest ob und wie ein Argument übergeben wurde
+\end{itemize}
+
+Damit der \emph{ArgumentParser} auf Attribute von \emph{Argumenten} zugreifen darf, welche nicht öffentlich sein sollen, wurden diese als \emph{protected} markiert und \emph{ArgumentParser} innerhalb der Klasse \emph{Argument} als \emph{Friend Class} markiert (siehe dazu \autoref{lst:argparser_argument_friend}, Zeilen 2-3).
+Auch wenn der übergebene Wert intern als String repräsentiert wird, kann er mit der Funktion \emph{getValue()} auch in andere primitive Typen konvertiert werden (\autoref{lst:argparser_argument_friend}, Zeilen 7-12).
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:argparser_argument_friend]
+namespace argparser {
+    class Argument {
+        friend class ArgumentParser;
+
+    public:
+        [..]
+        template<typename T> T getValue() {
+            std::istringstream in(this->value);
+            T t = T();
+            in >> t >> std::ws;
+            return t;
+        }
+        [..]
+    protected:
+        std::string value;
+        [..]
+    };
+    [..]
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=c++, numbers=left, breaklines=true, breakatwhitespace=false, label=lst:argparser_example, caption=Argparser Verwendung]
+int main(int argc, char *argv[]) {
+    argparser::ArgumentParser parser("yapgt (yet another photogrammetry tool)");
+    argparser::Argument a_loadCalibration("loadCalibration", "Filepath to load calibration from");    
+    parser.addArgument(&a_loadCalibration);
+    parser.parseArguments(argc, argv);
+    if (a_loadCalibration.isFound()) {
+        filesystem::path path(a_loadCalibration.getValue<string>());
+    }
+}
+\end{lstlisting}
+
+Der Argumentparser kann wie in \autoref{lst:argparser_example} zu sehen ist verwendet werden:\\
+Zunächst wird eine Instanz von \emph{ArgumentParser} erzeugt.
+Als Parameter wird der Applikationsname übergeben.
+Dieser wird beim Aufruf der Applikation mit dem Argument \emph{-help} angezeigt.
+Danach wird ein Argument erzeugt.
+Als Parameter werden der Name des Argumentes, sowie eine Beschreibung für Hilfe übergeben.
+Danach wird das Argument dem ArgumentParser hinzugefügt.
+Mit der Funktion \emph{parseArguments(argc, argv)} wird das eigentliche Verarbeiten der Argumente durchgeführt.
+Mittels der Funktion \emph{isFound()} wird nun überprüft, ob das Argument übergeben wurde.
+Der übergebene Wert kann nun mittels \emph{getValue<string>()} als String weiter verarbeitet werden.
+
+In \autoref{tab:arguments} sind alle verfügbaren Argumente so wie eine Beschreibung aufgelistet.
+
+\begin{table}[]
+\centering
+\begin{tabularx}{\textwidth}{ |l|X| }
+\hline
+Name              & Beschreibung                                                                                                              \\ \hline
+loadCalibration   & Dateipfad, aus dem die Kalibrierung geladen wird, kann nicht gleichzeitig mit calibrationImages werden                    \\
+saveCalibration   & Dateipfad, in dem die Kalibrierung gespeichert wird                                                                       \\
+calibrationImages & Ordnerpfad, Bilder welche zur Kalibrierung verwendet werden, kann nicht gleichzeitig mit loadCalibration verwendet werden \\
+calibrateRow      & Anzahl der Zeilen des Kalibrierungsmusters                                                                                \\
+calibrateColumn   & Anzahl der Spalten des Kalibrierungsmusters                                                                               \\
+matchImages       & Ordnerpfad, Bilder, welche zum Matching verwendet werden                                                                  \\
+out               & Dateipfad, in den die Punkte exportiert werden                                                                            \\
+matchOutput       & Ordnerpfad, visueller Export aller Matches                                                                                \\ \hline
+\end{tabularx}
+\caption{Übersicht über alle verfügbaren Argumente}
+\label{tab:arguments}
+\end{table}

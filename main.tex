@@ -14,7 +14,10 @@
             xurl,           % break urls at any alphanumeric character
             nameref,        % reference to paragraphs by name
             amsmath,
-            graphicx
+            graphicx,
+            scrlayer-scrpage,
+            scrhack,
+            dirtree
           }
 
 \usepackage[english,main=ngerman]{babel} % german and english language package
@@ -26,6 +29,8 @@
 \usepackage[ngerman,noabbrev]{cleveref} % references with german text
 \usepackage[style=ieee, backend=biber]{biblatex}
 \usepackage{csquotes} % enquote text, loading csquotes before inputenc to remove warnings
+\usepackage[toc,page]{appendix}
+
 
 % \DeclareLanguageMapping{ngerman}{ngerman-apa} % set languagemapping to use apa style with biber
 \bibliography{src/bibliography}
@@ -61,6 +66,9 @@
 
 \crefname{listing}{Listung}{Listungen}
 \Crefname{listing}{Listung}{Listungen}
+
+\renewcommand{\appendixtocname}{Anhang}
+\renewcommand{\appendixpagename}{Anhang}
 
 \begin{document}
 \input{src/main.tex}
