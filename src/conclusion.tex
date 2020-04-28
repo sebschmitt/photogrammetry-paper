@@ -4,42 +4,47 @@
 \label{sec:conclusion}
 
 Die vier Testfälle in XXX haben gezeigt, dass in der Arbeit vorgestellte Pipeline nur unter bestimmten Umständen funktioniert.
-Diese Umstände, sowie mögliche Fehlerursachen, wurden in den Testfällen bereits erwähnt und werden nun näher erläutert.
+Jedoch sind die Rekonstruktionen auch unter diesen Umständen nicht korrekt und müssen nachbearbeitet werden.
+Die möglichen Probleme und Fehlerursachen werden in diesem Abschnitt näher erläutert.
 In XXX werden Ansätze zur Lösung der hier genannten Problemen genannt.
 
-Der wichtigste Umstand für eine gute Rekonstruktion ist, dass viele Keypoints auf dem zu rekonstruierenden Objekt liegen und viele Korrespondenzen im anderen Bild gefunden werden.
-Da Feature Detektoren Kanten und Ecken als Features erkennen, eignen sich Objekte mit einer kantigen Oberfläche gut für die Rekonstruktion.
-Beispiele dafür sind der Sessel in XXX und die Box in XXX.
-Andere Oberflächen, die glatt sind oder kein besonderes Muster besitzen, sind entsprechend nicht geeignet.
+Ein wichtiger Umstand für eine gute Rekonstruktion mit der Pipeline ist, dass viele Keypoints auf dem zu rekonstruierenden Objekt liegen und viele Korrespondenzen im anderen Bild gefunden werden.
+
+Ein Problem der Pipeline ist, dass nicht genügen Punkte rekonstruiert werden.
+Dadurch ist es nicht möglich das Objekt zu erkennen, wenn die Rekonstruktion in Blender betrachtet wird.
+Der Grund dafür ist, dass die Erkennung von Features in Bilder auf Ecken und Kanten basiert.
+Somit werden viele Features auf kantigen Oberflächen gefunden wie sie beim Sessel in XXX oder bei der Box in XXX zu sehen sind.
+Bei andere Oberflächen, die glatt sind oder kein besonderes Muster besitzen, können auf ihnen keine Features gefunden werden.
 Das ist gut beim Sitzkissen des Sessels, beim Auto und beim Hund zu erkennen. 
 
-Ein Weiteres Problem ist, dass die Punkte nicht richtig rekonstruiert werden.
-In XXX(Auto) ist zu sehen, dass Punkte, die weit hinten im Hintergrund liegen, ungefähr in der gleichen Ebene wie andere Punkte liegen, die weiter vorne sind.  
-Dahingegen ist in XXX(Hund) gut zu erkennen, wie die Punkte des Teppichs verschiedene Ebenen satt einer bilden.
+Das weitaus größere Problem ist, dass die Bildpunkte nicht richtig rekonstruiert werden.
+In XXX(Auto) ist zu sehen, dass die rekonstruierten Punkte der Bäume im Hintergrund ungefähr in der gleichen Ebene wie die Punkte der Wand liegen.  
+Dahingegen ist in XXX(Hund) gut zu erkennen, wie die Punkte des Teppichs keine gemeinsame Ebene bilden.
 Das gleiche Problem tritt auch bei den vergleichsweisen guten Testfällen auf, wie in XXX (Sessel) und XXX(Box) zu sehen ist.
 
 Das Problem lässt eine schlechte Skalierung vermuten, die durch mehrere Ursachen entstehen kann. 
-Eine mögliche Ursache sind falsche Matches, also ein korrespondierende Bildpunkte, die nicht zusammengehören.
-Durch falsche Matches entstehen zum einen Fehler bei beim Bestimmen der Position der Kamera in einem Bildpaar.
+Eine mögliche Ursache sind falsche Matches, also korrespondierende Bildpunkte, die nicht zusammengehören.
+Durch falsche Matches entstehen zum einen Fehler beim Bestimmen der Position der Kamera in einem Bildpaar.
 Dies kann sich in der Projektionsmatrix bemerkbar machen, wodurch ein geringer Fehler bei allen Rekonstruierten Punkten entstehen kann.
 Des Weiteren wird die Skalierung direkt negativ beeinflusst, wenn falsche Matches zum Bestimmen der Skalierung verwendet werden. 
-Der Fehler, der hierbei entsteht, ist um so größer, um so weniger Punkte zum Bestimmen der Skalierung genutzt werden.
-So werden beispielsweise bei der Rekonstruktion des Autos nur zwei Punkte zum Skalieren benutzt (siehe XXX(auto tabelle)).
-Falsche Matches sind in diesem Projekt ein kleineres Problem, da die Matches sofort gefiltert werden, so dass sie die Bildpunkte in der gleichen Epipolarebene liegen.
+Der dabei entstehende Fehler wird größer, wenn weniger Punkte zum Bestimmen der Skalierung genutzt werden.
+Beispielsweise wird bei der Rekonstruktion des Autos nur zwei Punkte zum Skalieren benutzt (siehe XXX(auto tabelle)).
+Falsche Matches sind in diesem Projekt jedoch ein kleineres Problem, da die Matches stark gefiltert werden.
+Die gefundenen Feature Matches werden mit Hilfe der Fundamentalmatrix gefiltert, so dass die korrespondierenden Bildpunkte in der gleichen Epipolarebene liegen.
 Des Weiteren werden beim Rekonstruieren alle Ausreißer vermerkt und später entfernt.
 Daher sind bei den in XXX gezeigten Bildpaaren, die ihre Feature Matches zeigen, keine falschen Matches zu erkennen.
-Im ersten Testfall ist es schwer die Matches auf dem Teppich zu erkennen (in XXX ist es noch extremer), und man kann vermuten, dass hier einige falsch sind.
+Im ersten Testfall ist es jedoch schwer die Matches auf dem Teppich zu erkennen (in XXX ist es noch extremer) und man kann vermuten, dass hier einige falsch sind.
 Jedoch ist im vierten Testfall ein ähnliches Ergebnis wie im ersten zu finden und es sind keine falschen Matches zu erkennen.
-Somit können falsche Matches ein Ursache für die schlechte Skalierung sein, aber auf Grund der Anzahl der verwendeten Punkte im ersten und vierten Testfall ist der verursachte Fehler nur sehr klein.
-Fehler bei rekonstruierten Punkten sind eine weitere Ursache, die einen stärkeren Einfluss auf die Skalierung hat. 
+Somit können falsche Matches zwar ein Ursache für die schlechte Skalierung sein, aber auf Grund der Anzahl der verwendeten Punkte im ersten und vierten Testfall ist der verursachte Fehler nur sehr klein.
+
+Der Fehler, der beim Rekonstruieren der Punkte entsteht, ist eine weitere Ursache, die einen stärkeren Einfluss auf die Skalierung hat. 
 Im zweiten Testfall ist zu erkennen, dass die Keypoints auf den Bäumen ungefähr gleich weit von der Kamera entfernt rekonstruiert werden, wie die Keypoints auf der Wand.
 Diese Fehler entsteht dadurch, dass die Parallaxe bei zwei Bildern kleiner wird, desto weiter das Objekt entfernt ist. % TODO: muss belegt werden
 Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, die bei allen Punkten auftritt, aber bei entfernten Objekten stärker wird. % TODO: muss belegt werden
 Dies beeinflusst die Distanzen zwischen den Punktpaaren, wodurch die Skalierung ungenau wird.
-Zwar wird die Skalierung als der Durchschnitt aller Verhältnisse der Distanzen berechnet, jedoch wird der Fehler nicht weiter minimiert.
+Zwar wird die Skalierung als Durchschnitt aller Verhältnisse der Distanzen berechnet, jedoch wird der Fehler nicht weiter minimiert.
 Da einzelne Bildpaare mit Hilfe der Punkte aus dem vorherigen Bildpaar rekonstruiert werden, nimmt der Fehler mit jedem weiteren Bildpaar zu. 
 % Hunde problem nochmal erläutern
-% irgendein Punkt wollte ich nochmal ansprechen, aber ich habs vergessen...
 
 \chapter{Ausblick}
 \label{sec:outlook}
