@@ -1,0 +1,15 @@
+\section{Feature Identifizierung}\label{sec:feature-identification}
+Zur Feature Identifizierung wird der Algorithmus \emph{Scale-Invariant Feature Transform} (SIFT) verwendet.
+SIFT bietet den Vorteil dass viele Keypoints gefunden werden und der Algorithmus, in gewissen Grenzen, invariant gegenüber Transformationen wie Translation, Rotation und Skalierung ist.
+Zudem bietet SIFT gegenüber Weiterentwicklungen wie Speeded Up Robust Features (SURF) den Vorteil, dass das Patent mittlerweile ausgelaufen ist\footnote{siehe dazu https://patents.google.com/patent/US6711293} und der Algorithmus jetzt frei verwendet werden kann.
+
+Die Feature Identifizierung findet in der Methode \emph{generateSequence} der Klasse \emph{SequenceMatcher} statt.
+Hierzu werden für jedes Bild folgende Schritte durchgeführt:\\
+Zunächst wird ein ImageContainer-Struktur erzeugt.
+Danach wird das Bild mittels \emph{cv::imread}\cite{opencv_doc_imread} als \emph{cv::Mat}\cite{opencv_doc_mat} eingelesen.
+Diese Matrix wird nun mittels \emph{resize} um den Downsampling Faktor herunterskaliert um die Bearbeitung zu beschleunigen.
+Danach wird die Methode \emph{undistortImage} des übergebenen \emph{Calibration} Objekts verwendet um das Bild zu entzerren.
+Danach wird eine Instanz der OpenCV Implementierung von SIFT erzeugt \cite{opencv_doc_sift}.
+Dabei werden als Parameter für \emph{nFeatures} 0, um alle Features zu erhalten, für \emph{nOctaveLayers} 3, für \emph{contrastThreshold} 0.04, für \emph{edgeThreshold} 10 sowie für \emph{sigma} 1.6 übergeben.
+Zuletzt wird die Funktion \emph{detectAndCompute}\cite{opencv_doc_detect_and_compute} der SIFT Instanz aufgerufen.
+Als Parameter wird hier das eingelesene Bild, ein Leeres Array (\emph{cv::noArray}\cite{opencv_doc_no_array}) als Maske sowie Pointer für die Rückgabe der Keypoints sowie der Deskriptoren verwendet.

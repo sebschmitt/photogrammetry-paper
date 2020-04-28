@@ -1,0 +1,53 @@
+\section{Export}\label{sec:export}
+Die rekonstruierten Punkte können exportiert und so in 3D-Animationsprogrammen wie Blender\footnote{https://blender.org} weiterverarbeitet werden.
+Dazu wird das Polygon File Format (PLY) verwendet, welches in \autoref{sec:ply-format} genauer erklärt wird.
+
+Die Schnittstelle zum Export ist in der abstrakten Klasse \emph{ModelExporter}, welche in \emph{include/modelexporter.hpp} spezifiziert ist, definiert.
+Ziel dieser Lösung ist es mehrere, austauschbare Exporter zu verwenden, wenngleich aktuell nur der PLY Exporter implementiert ist.
+Dieser ist in der Klasse \emph{PlyModelExporter} implementiert, welche von \emph{ModelExporter} erbt.
+Diese Klasse ist in \emph{include/model-exporters.hpp} spezifiziert und in \emph{src/ply-model-exporter.cpp} implementiert.
+
+
+\subsection{Polygon File Format}\label{sec:ply-format}
+Die Datei beginnt mit einem Header.
+In diesem wird der Aufbau der Datei genauer spezifiziert.
+Der Header startet dabei immer mit der magischen Zahl \emph{ply}.
+In der zweiten Zeile wird mit \emph{format} das verwendete Format sowie die Version des Formats festgelegt.
+Verfügbare Formate sind entweder \emph{ascii}, \emph{binary\_little\_endian} sowie \emph{binary\_big\_endian}.
+Aktuell gibt es nur Version 1.0.
+In dieser Arbeit wird zur Ausgabe das \emph{ascii} Format verwendet.
+Auch wenn ein Binärformat gewählt wird, so besteht der Header immer aus ASCII-Zeichen.
+Mit dem \emph{element} Keyword beginnt die Beschreibung der verwendeten Elemente sowie deren Anzahl.
+Mit \emph{property} können verwendete Eigenschaften der Elemente sowie deren Datentypen festgelegt werden.
+In dieser Arbeit werden lediglich \emph{vertex} Elemente verwendet.
+Diese haben die Attribute \emph{x}, \emph{y} und \emph{z} sowie \emph{red}, \emph{green} und \emph{blue}.
+Eine Beispieldefinition ist in \autoref{lst:ply_vertex_element} zu sehen.
+Der Header wird mit dem Keyword \emph{end\_header} beendet.
+Darauf folgen alle Elemente in der im Header festgelegten Reihenfolge.
+Es ist also nicht nötig zusätzlich den Typ des Elements anzugeben.
+Um Beispielsweise einen roten Punkt mit den Koordinaten $\left(1, 2, 3\right)$ zu definieren, braucht man folgenden Eintrag:\\
+\emph{1.0	2.0	3.0	255	0	0}
+
+\begin{lstlisting}[numbers=left, breaklines=true, breakatwhitespace=false, label=lst:ply_vertex_element, caption=Beispiel PLY Header für 10 Vertex Elemente mit den Attributen Position und Farbe]
+element vertex 10
+property float x
+property float y
+property float z
+property uchar red
+property uchar green
+property uchar blue
+end_header
+\end{lstlisting}
+
+\subsection{Farben}
+Zur Bestimmung der Farben der Punkte gibt es die Klasse \emph{ColorPicker} welche in \emph{include/colors.hpp} spezifiziert und in \emph{src/colors.cpp} implementiert ist.
+Diese stelle eine öffentliche, statische Methode bereit welche als Parameter zwei Bilder, zwei Punkte sowie einen Radius annimmt.
+Zunächst wird pro Bild über den Radius um den übergebenen Punkt herum die Durchschnittsfarbe bestimmt, danach wird der Durchschnitt beider Farben gebildet.
+
+Leider kann Blender nicht von sich aus Farben in Punktwolken visualisieren.
+Möchte man in Blender auch die Farben darstellen, so bietet sich das Addon \emph{Point Cloud Visualizer}\footnote{https://blenderartists.org/t/point-cloud-visualizer/684180} an.
+Zur Installation muss lediglich die Datei \emph{space\_view3d\_point\_cloud\_visualizer.py} in den Blender Add-on Einstellungen installiert werden.
+Zur Verwendung kann man der 3D View mittels \emph{Add}  $\,\to\,$ \emph{Mesh} $\,\to\,$ \emph{Plane} ein Plane hinzufügen.
+Durch drücken der Taste \emph{n} öffnet sich rechts ein Optionsmenü.
+Dieses hat als zusätzlichen Punkt nun \emph{Point Cloud Visualizer}.
+Hier kann die PLY Datei geladen und gerendert werden\cite{blender_point_cloud_visualizer}.

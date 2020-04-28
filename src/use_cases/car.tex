@@ -1,0 +1,67 @@
+\section{Fall 2: Auto}
+\label{sec:testcase-car}
+Im zweiten Testfall wird die Rekonstruktion eines Autos getestet. 
+Insgesamt wurden 17 Bilder von einem schwarzen Skoda Fabia gemacht, die das Auto in verschiedenen Positionen zeigt.
+Die Tabelle~\cref{tab:car-results} zeigt Anzahl der rekonstruierten Punkte pro Bildpaar.
+Im Vergleich zum ersten Testfall gibt es hier deutlich weniger Matches, rekonstruierte Punkte und Punkte,die für die Skalierung verwendet worden sind.
+\cref{fig:car-second-pair,fig:car-second-pair-with-matches} zeigen das zweite Bildpaar vom Auto.
+Hier ist sehen, dass dass die Keypoints der meisten Matches nicht auf auf dem Auto liegen.
+Statt dessen werden Matches eher an den Wänden, Pflanzen und auf dem Boden gefunden.
+Bei dem Auto selbst werden die Matches hauptsächlich nur am Nummernschild und vereinzelt in den Reflexionen der Umgebung gefunden.
+Wie durch die schlechten Matches zu erwarten ist, kann das Auto in den rekonstruierten Modell nicht erkannt werden, wie in \cref{fig:car-model} zu sehen ist.
+In \cref{fig:car-model-2} ist das Modell aus einem anderem Winkel zu sehen.
+Hier ist deutlich zu erkennen, dass die grünen Punkte der Pflanzen im Hintergrund in der gleichen Ebene wie viele Andere Punkte liegen. 
+Dies lässt auf einen Fehler in der Triangulation oder Skalierung der Punkte vermuten.
+
+\begin{table}
+    \begin{tabularx}{\textwidth}{cXXXX}
+        \toprule
+        Bildpaar &  Anzahl der Matches & Anzahl der Weltpunkte & Anzahl der Weltpunkte für Skalierung & angewandte Skalierung \\ 
+        \midrule
+        1  & 575 & 480 & -  & - \\
+        2  & 910 & 860 & 165 & 0,468641 \\
+        3  & 685 & 653 & 227 & 0,768563 \\
+        4  & 583 & 570 & 51  & 0,788242 \\
+        5  & 264 & 247 & 25  & 0,60277 \\
+        6  & 427 & 409 & 58  & 0,848896 \\
+        7  & 393 & 346 & 95  & 2,80038 \\
+        8  & 799 & 527 & 99  & 0,923119 \\
+        9  & 827 & 518 & 113 & 0,577807 \\
+        10 & 618 & 597 & 125 & 1,11263 \\
+        11 & 251 & 187 & 56  & 0,472208 \\
+        12 & 68  & 36  & 10  & 1,49154 \\
+        13 & 341 & 325 & 2   & 1,33112 \\
+        14 & 334 & 263 & 18  & 2,02715 \\
+        15 & 175 & 166 & 12  & 0,475839 \\
+        16 & 167 & 146 & 21  & 0,651284 \\
+        \midrule
+        Summe & 7.417 & 6.330 & 1.077 & - \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Ergebnis der Rekonstruktion der Autobilder.}
+    \label{tab:car-results}
+\end{table}
+
+\begin{figure}[b]
+    \includegraphics[width=\textwidth]{src/img/car_second_pair.jpg}
+    \caption{Das zweite Bildpaar zum Rekonstruieren des Autos.}
+    \label{fig:car-second-pair}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/car_second_pair_with_matches.jpg}
+    \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
+    \label{fig:car-second-pair-with-matches}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/car_model.jpg}
+    \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
+    \label{fig:car-model}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{src/img/car_model.jpg}
+    \caption{Das zweite Bildpaar vom Auto mit Keypoints und Matches.}
+    \label{fig:car-model-2}
+\end{figure}

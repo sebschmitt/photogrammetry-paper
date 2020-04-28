@@ -1,21 +1,24 @@
 % !TeX root = ../main.tex
 
 \begin{titlepage}
+\begin{flushright}
 \includegraphics[height=2.5cm]{images/dhbw.png}
+\end{flushright}
 \begin{center}
     \vspace*{\baselineskip}{\LARGE \textbf {Machbarkeitsstudie von 3D-Rekonstruktion mit OpenCV}\\
-    \vspace*{2\baselineskip}{\Large \textbf{Studienarbeit}}\\
-    \vspace*{2\baselineskip}{\large \textbf{des Studiengangs Angewandte Informatik}}\\
+    \vspace*{1.5\baselineskip}{\Large \textbf{Studienarbeit}}\\
+    \vspace*{1.0\baselineskip}{\large \textbf{des Studiengangs Angewandte Informatik}}\\
     \vspace*{.25\baselineskip}{\large \textbf{an der Dualen Hochschule Baden-Württemberg Mannheim}}\\
-    \vspace*{2\baselineskip}{\large \textbf{von}}\\
+    \vspace*{1.5\baselineskip}{\large \textbf{von}}\\
     \vspace*{.25\baselineskip}{\Large{\textbf{Jan Maier, Sebastian Schmitt}}}\\
-    \vspace*{2\baselineskip}{\large \textbf{Abgabedatum: 29.04.2020}}}
+    \vspace*{2\baselineskip}{\large \textbf{Abgabedatum: 28.04.2020}}}
 \end{center}
 \vfill
-\begin{tabularx}{\textwidth}{Xl}
-    Matrikelnummer, Kurs & , TINF17AIBC \\
-    Matrikelnummer, Kurs & 8608772, TINF17AIBC \\
-    Betreuer der Hochschule & Prof. Dr. Eckhard Kruse \\
+\begin{tabularx}{\textwidth}{Xr}
+    Bearbeitungszeitraum & 25. September 2019 - 29. April 2020 \\
+    Matrikelnummer, Kurs & 1781343/8608772, TINF17AIBC \\
+    Ausbildungsfirma & Accenture CAS/TWENTY |20 GmbH \& Co. KG \\
+    Betreuer der Hochschule & Prof. Dr. Eckhard Kruse
 \end{tabularx}
 \end{titlepage}
 
@@ -23,6 +26,7 @@
 % set the page numbering for the frontmatter to roman
 \pagenumbering{Roman}
 
+\input{src/declaration} 
 \input{src/abstract} 
 
 % \addcontentsline{toc}{chapter}{\protect\numberline{}\tab}
@@ -47,6 +51,10 @@
 \addcontentsline{toc}{chapter}{\protect\numberline{}\lstlistlistingname}
 \lstlistoflistings
 
+\newpage
+\phantomsection
+\input{src/authors}
+
 
 % mainmatter
 \newpage
@@ -62,4 +70,6 @@
 \addcontentsline{toc}{chapter}{\protect\numberline{}Literatur}
 \printbibliography
 
-\input{src/glossary}
+\begin{appendices}
+\input{src/appendices/example-calibration-file.tex}
+\end{appendices}
