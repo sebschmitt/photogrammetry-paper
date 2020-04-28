@@ -2,7 +2,7 @@
 
 \chapter{Stand der Technik}
 
-\section{Was ist Photogrammetrie?}
+\section{Was ist Photogrammetrie?}\label{sec:what-is-photogrammetry}
 Mit Photogrammetrie bezeichnet man Techniken, mit denen man Informationen wie Position, Orientierung, Form und Größe eines Objekts aus Bildern rekonstruieren kann.
 Dabei unterscheidet man ob es sich bei den Bildern um photochemische (konventionelle Photographie), photoelektrische (digitale Photographie) oder um Laserscanner-Aufnahmen, dabei handelt es sich um Bilder welche zusätzlich Entfernungsinformationen zu jedem Bildelement enthalten, handelt.
 Je nach Art der Weiterverarbeitung sowie Aufnahme der Bilder wird der Begriff der Photogrammetrie weiter differenziert.
@@ -110,7 +110,7 @@ Die Beziehung zwischen beiden Koordinatensystemen wird durch die $3\times 3$ Rot
 Die Kamera-Projektionsmatrix kann somit auch als $P=K[R|t]$ geschrieben werden~\cite[Kapitel 6.1,S. 156, Gleichung 6.7]{hartley_2003}.
 
 
-\subsection{Fundamental Matrix}
+\subsection{Fundamental Matrix}\label{sec:fundamental-mat}
 Die Fundamental Matrix ist eine algebraische Darstellung der Epipolargeometrie zwischen zwei Sichten.
 Ziel dieser Geometrie ist die Suche von korrespondierenden Punkten in zwei Sichten.
 
@@ -136,7 +136,7 @@ Geometrisch betrachtet ist die Matrix F eine Abbildung der Punkte in einem Bild 
     \label{fig:theory-fundamental-matrix}
 \end{figure}
 
-\subsection{Essentielle Matrix}
+\subsection{Essentielle Matrix}\label{sec:essential-mat}
 Die essentielle Matrix ist eine Spezialisierung der Fundamentalmatrix mit normalisierten Bildkoordinaten.
 Sie wird durch die Gleichung $\hat{x}'E\hat{x}$ definiert, wobei $\hat{x}$ ein Punkt in normalisierten Bildkoordinaten darstellt.
 Mit Hilfe der Kalibrierungsmatrizen $K$ und $K'$ von zwei Bildern, kann die Beziehung $E=K'^TFK$ zur Fundamentalmatrix hergeleitet werden~\cite[Kapitel 9.6]{hartley_2003}.
@@ -156,7 +156,7 @@ Hier muss beachtet werden, dass $t$ ein Einheitsvektor und nur maßstabsgetreu i
     \label{fig:theory-essential-matrix-geometry}
 \end{figure}
 
-\section{Kamerakalibrierung}
+\section{Kamerakalibrierung}\label{sec:theory-calibration}
 Die Kamerakalibrierung ist ein Prozess zum Bestimmen der kamera-spezifischen Parametern der Kameramatrix und den Verzerrungsparametern. 
 Die Kameramatrix wird in \cref{sec:pinhole-camera-model} erklärt.
 Die Verzerrungsparameter werden genutzt, um die Verzerrung auszugleichen, die durch der Kameralinse entsteht.
@@ -197,7 +197,7 @@ Die Auto-Kalibrierung wird häufig bei der 3D Modellierung eingesetzt~\cite{remo
     \label{fig:3d_grid}
 \end{figure}
 
-\section{Feature Matching}
+\section{Feature Matching}\label{sec:theory-feature-matching}
 In vielen Computer Vision Anwendungen ist das Erkennen, Beschreiben und Finden von Übereinstimmungen von Features ein wichtiger Bestandteil~\cite{hassaballah_2016}.
 Unter Anderem werden bei Methoden der 3D Rekonstruktion, wie SfM, korrespondierende Bildpunkte in verschiedenen Bildern benötigt, um eine abgebildete Szene rekonstruieren zu können.
 
