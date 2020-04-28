@@ -1,14 +1,14 @@
 \section{Rekonstruktion}\label{sec:implementation-reconstruction}
 
 In diesem Abschnitt werden die einzeln Schritte zum Rekonstruieren der Korrespondenzen erklärt, die im vorherigen Prozess gebildet worden sind. 
-Für die Rekonstruktion wird die Klasse \emph{SceneReconstructor} in der Datei \emph{reconstruction.hpp} definiert und in \emph{reconstruction.cpp} implementiert (siehe XXX und XXX). 
+Für die Rekonstruktion wird die Klasse \emph{SceneReconstructor} in der Datei \emph{reconstruction.hpp} definiert und in \emph{reconstruction.cpp} implementiert. 
 Die Klasse besitzt einen Konstruktor, welche eine Instanz der Calibration Klasse als Argument benötigt. 
 Mit der Instanz wird die private Member-Variable \emph{calbiration} instanziiert, sodass sie später zum Berechnen der Projektionsmatrix verwendet werden kann.
 Des Weiteren wird die öffentliche Methode \emph{reconstructScenes} definiert.
 Mit dem Iterator werden in der Methode die korrespondierenden Bildpunkte rekonstruiert.
 Dabei wird darauf geachtet, dass die rekonstruierten Punkte der einzelnen Paare später auch zusammen passen.
-Wie in XXX zusehen ist, werden einige weitere private Methoden für die Klasse definiert.
-Diese Implementieren bestimmte Berechnungen für die Rekonstruktion, die in den folgenden Paragrahen näher erläutert werden.
+Es werden noch weitere private Methoden definiert, die bestimmte Berechnungen für die Rekonstruktion implementieren.
+Diese werden in den folgenden Paragraphen näher erläutert.
 Für jedes Bildpaar wird die Rekonstruktion in den folgenden 5 Schritten durchgeführt:
 
 \begin{enumerate}
@@ -26,9 +26,8 @@ Für jedes Bildpaar wird die Rekonstruktion in den folgenden 5 Schritten durchge
 
 Im ersten Schritt wird für das aktuelle Bildpaar die Rotation und Translation der rechten Kamera im Bezug auf die Linke bestimmt.
 Wie in \cref{sec:essential-mat} beschrieben, wird dazu die essentielle Matrix berechnet und in $R$ und $t$ zerlegt.
-OpenCV bietet dafür die Funktionen \emph{findFundamentalMat}~\cite{opencv_doc_essential_matrix} und \emph{recoverPose}~\cite{opencv_doc_recover_pose} an.
-In Zeile XXX des Listings XXX wird findFundamentalMat aufgerufen. 
-Hierbei werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix übergeben.
+OpenCV bietet dafür die Funktionen \emph{cv::findEssentialMat}~\cite{opencv_doc_essential_matrix} und \emph{cv::recoverPose}~\cite{opencv_doc_recover_pose} an.
+Zunächst werden die korrespondierenden Bildpunkte der beiden Bilder und die Kalibrierungsmatrix an \emph{cv::findEssentialMat} übergeben.
 Mit den weiteren drei Argumenten wird der angewendete Algorithmus gewählt und angepasst.
 Es kann zwischen \emph{RANSAC} (random sampling with consensus) und \emph{LMeDS} (least median of squares) gewählt werden.
 Hier wird der RANSAC Algorithmus gewählt, da laut~\cite[Kapitel 18, 664]{kaehler_2016} RANSAC resistenter gegen Ausreißer und Rauschen im Bild ist als LMeDS. % TODO: ggf noch ein Satz zu warum das gut ist, also dass wir Ausreißer in den Matches und evt. schlete Bilder erwarten
@@ -38,7 +37,7 @@ Genauere Details zu den beiden Algorithmen sind nötig werden hier nicht näher 
 Bei Interesse können die originalen Arbeiten zu RANSAC (siehe~\cite{fischler_81}) und LMeDS (siehe~\cite{inui_03}) gelesen werden.
 Mit dem letzten Argument der Methode, wird in einem Vektor vermerkt, welche der Matches Ausreißer sind.
 Dieser Vektor wird in einem späteren Schritt genutzt, um die rekonstruierten Punkte zu filtern.
-Die somit bestimmte essentielle Matrix wird dann in XXX mit recoverPose in die Rotationsmatrix $R$ und den Translationsvektor $t$ zerlegt.
+Die somit bestimmte essentielle Matrix wird dann mit \emph{cv::recoverPose} in die Rotationsmatrix $R$ und den Translationsvektor $t$ zerlegt.
 % Dazu werden neben der essentiellen Matrix auch die wieder die korrespondierenden Bildpunkte und die Kalibrierungsmatrix angegeben.
 % erkläre kurz die Methode
 
@@ -53,9 +52,9 @@ Es gilt:
         \end{bmatrix}
     \] 
 Dabei ist $T_0$ die $4 \times 4$ Identitätsmatrix.
-Die Berechnung ist in XXX in Zeile XXX implementiert.
+Die Berechnung ist in der Methode \emph{computePoseAndProjection} implementiert.
 $T_{n-1}$ wird von der Methode \emph{getPreviousTransform} der ImagePair Klasse als Argument übergeben. % TODO: ggf. getPreviousTransform erklären, wenn nicht bereits getan
-Zusätzlich wird in XXX die Hilfsmethode \emph{combineToTranformation} implementiert, die eine $3\times3$ Rotationsmatrix und einen Translationsvektor zu einer $4\times4$ Transformationsmatrix zusammensetzt.
+Zusätzlich wird die Hilfsmethode \emph{combineToTranformation} implementiert, die eine $3\times3$ Rotationsmatrix und einen Translationsvektor zu einer $4\times4$ Transformationsmatrix zusammensetzt.
 
 In der getPreviousTransform wird auch der vierte Schritt ausgeführt, in dem die Projektionsmatrix berechnet wird.  
 Dazu ist es nötig $T_n$ in die Rotationsmatrix $R_n$ und den Translationsvektor $t_n$ aufzuteilen. 
@@ -64,10 +63,10 @@ Es gilt $T_n = \begin{bmatrix}
                 R_n & t_n \\
                 0 & 1 \\
             \end{bmatrix}$
-Die Aufteilung wird ist in der Methode \emph{getFromTransformation} in XXX implementiert.
-Anschließend wird die Projektionsmatrix $P$ mit $P = K[R|t]$ berechnet, und wird in der Methode \emph{getProjection} in XXX implementiert.
+Die Aufteilung wird ist in der Methode \emph{getFromTransformation} implementiert.
+Anschließend wird die Projektionsmatrix $P$ mit $P = K[R|t]$ berechnet, und wird in der Methode \emph{getProjection} implementiert.
 
-In Schritt 4 werden die Bildpunkte mit der Methode \emph{triangulatePoints} von Opencv rekonstruiert.
+In Schritt 4 werden die Bildpunkte mit der Methode \emph{cv::triangulatePoints} von Opencv rekonstruiert.
 Sie benötigt als Argumente die Projektionsmatrizen beider Kameras, sowie die Korrespondenzen aus beiden Bilder.
 Die Projektionsmatrix der linken Kamera entspricht der Projektionsmatrix des vorherigen Bildpaars. 
 Auf sie kann durch die Methode \emph{getPreviousProjection} der ImagePair Klasse zugegriffen werden.% gff. Methode erklären falls es noch nicht getan worden ist
@@ -77,7 +76,7 @@ Dabei entspricht eine Spalte der Matrix einen einzeln Punkt im Raum in homogenen
 Die Rekonstruktion des ersten Bildpaares ist mit diesem Schritt bereits vollendet.
 Durch die Methode \emph{setReconstruction} der ImagePair Klasse werden die Ergebnisse der Rekonstruktion für die aktuelle ImagePair Instanz gespeichert.
 Dieser Methode werden die Projektionsmatrix, die Transformationsmatrix, die rekonstruierten Punkte und die Maske der Ausreißer als Argumente übergeben. 
-Wie in XXX zusehen ist, werden die Projektions- und Transformationsmatrix einfach den Member-Variablen zugewiesen.
+Die Projektions- und Transformationsmatrix werden den Member-Variablen zugewiesen.
 Die rekonstruierten Punkte werden dahingegen gefiltert und zu einem vector<cv::Point3f> konvertiert.
 Dabei werden alle Ausreißer, die durch die Maske angegeben werden, sowie alle Punkte mit einem negativen Z-Wert gefiltert.
 Grund dafür ist, dass die Richtung der Kameras in Richtung der Z-Achse definiert ist.

@@ -34,12 +34,12 @@ Im dritten Prozess \emph{Rekonstruktion} wird die Geometrie der Szenen der Bildp
 Dabei werden die Positionen der Kameras der vorherigen Bildpaare beachtet, damit die Weltpunkte eines Bildpaares im selben Koordinatensystem ausgedrückt werden.
 Des Weiteren wird mit Hilfe der bereits bestimmten Weltpunkte die Skalierung einer Szene bestimmt.
 Dadurch passen die Weltpunkte der einzelnen Szenen später beim Zusammenführen besser zusammen.
-Die Schritte, die bei der Rekonstruktion durchgeführt werden, und ihre Mathematik werden in XXX erklärt.
+Die Schritte, die bei der Rekonstruktion durchgeführt werden, und ihre Mathematik werden in \cref{sec:implementation-reconstruction} erklärt.
 
 Der vierte und letzte Prozess der Pipeline \emph{Export} sammelt die rekonstruierten Weltpunkte und bestimmt ihre Farbe aus den Bildern.
 Die Punkte und ihre Farbinformationen werden anschließend in einem einfachen Format als Datei gespeichert.
-Diese Datei kann dann mit Programmen wie Blender oder Meshlab geladen, betrachtet und editiert werden.
-Dieser Prozess und das Dateiformat werden in XXX beschrieben.
+Diese Datei kann dann mit Programmen wie beispielsweise Blender geladen, betrachtet und editiert werden.
+Dieser Prozess und das Dateiformat werden in \cref{sec:export} beschrieben.
 
 
 \begin{figure}
