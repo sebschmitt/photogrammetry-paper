@@ -38,8 +38,8 @@ Somit können falsche Matches zwar ein Ursache für die schlechte Skalierung sei
 
 Der Fehler, der beim Rekonstruieren der Punkte entsteht, ist eine weitere Ursache, die einen stärkeren Einfluss auf die Skalierung hat. 
 Im zweiten Testfall ist zu erkennen, dass die Keypoints auf den Bäumen ungefähr gleich weit von der Kamera entfernt rekonstruiert werden, wie die Keypoints auf der Wand.
-Diese Fehler entsteht dadurch, dass die Parallaxe bei zwei Bildern kleiner wird, desto weiter das Objekt entfernt ist. % TODO: muss belegt werden
-Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, die bei allen Punkten auftritt, aber bei entfernten Objekten stärker wird. % TODO: muss belegt werden
+Dieser Fehler entsteht dadurch, dass die Parallaxe bei zwei Bildern kleiner wird, desto weiter das Objekt entfernt ist (siehe ). % TODO: muss belegt werden
+Dadurch entstehen Ungenauigkeiten bei der Rekonstruktion, welche bei allen Punkten auftreten, aber bei entfernten Objekten stärker werden. % TODO: muss belegt werden
 Dies beeinflusst die Distanzen zwischen den Punktpaaren, wodurch die Skalierung ungenau wird.
 Zwar wird die Skalierung als Durchschnitt aller Verhältnisse der Distanzen berechnet, jedoch wird der Fehler nicht weiter minimiert.
 Da einzelne Bildpaare mit Hilfe der Punkte aus dem vorherigen Bildpaar rekonstruiert werden, nimmt der Fehler mit jedem weiteren Bildpaar zu. 
@@ -56,15 +56,14 @@ Die Punkte, welche in mehreren Bildpaaren zu finden sind, können gemittelt werd
 Dazu sollte auch die Anzahl der Punkte, die in mehreren Bildpaaren zu finden sind, erhöht werden.
 Dies kann erreicht werden, in dem die Feature Matches in allen möglichen Kombinationen der Bildpaaren gesucht werden.
 Es werden aber weiterhin nur die Bildpaare wie in XXX beschrieben rekonstruiert.
-Diese Änderung ist jedoch mit erheblichen Performanz-einbußen verbunden, da bei $N$ Bildern nun Feature Matches $(N-1)^2$ Bilder gesucht werden müssen. 
+Diese Änderung ist jedoch mit erheblichen Performanz-Einbußen verbunden, da bei $N$ Bildern nun Feature Matches in $(N-1)^2$ Bildern gesucht werden müssen. 
 %TODO: wir haben das versucht, aber verkackt (noch reinschreiben und rewording)
 
 Des Weiteren sollte ein Prozess zwischen Reconstruction und Export hinzugefügt werden, der Bundle Adjustment durchführt. 
-Bundle Adjustment ist eine Maximum-Likelihood-Schätzung, die den Reprojektionsfehler der rekonstruierten Punkte~\cite[Kapitel 18.1]{hartley_2003}.
-
+Bundle Adjustment ist eine Maximum-Likelihood-Schätzung, die den Reprojektionsfehler der rekonstruierten Punkte~\cite[Kapitel 18.1]{hartley_2003} minimiert.
 Die Gleichung $x^i_j = P^iX_j$ wird auf Grund des Rauschen in den Bildern nicht exakt erfüllt.
 Dabei gibt $x^i_j$ den j-ten Bildpunkt in der i-ten Kamera, $P^i$ die Projektionsmatrix der i-ten Kamera und $X_j$ den j-ten Weltpunkt an.
-Unter der Annahme von gaußischem Rauschen in den Bildern, sollen die Projektionsmatrix $\hat{P}^i$ und der Weltpunkt $\hat{X}_j$ geschätzt werden.
+Unter der Annahme von gaußschem Rauschen in den Bildern, sollen die Projektionsmatrix $\hat{P}^i$ und der Weltpunkt $\hat{X}_j$ geschätzt werden.
 Dabei soll auch die geometrische Distanz zwischen dem Bildpunkt $\hat{x}^i_j$ und seiner Reprojektion $\hat{x}^i_j = \hat{P}^i\hat{X}_j$ minimiert werden~\cite[Kapitel 18.1]{hartley_2003}.
 Also gilt \cite[Equation 18.1]{hartley_2003}:
 \[\min_{\hat{P}^i,\hat{X}_j}\sum_{ij}d(\hat{P}^i\hat{X}_j,x^i_j)^2\]
